@@ -1,5 +1,6 @@
 //import 'package:beton/widgets/pages/betpage.dart';
 import 'package:basics/Calendar/CalendarPage.dart';
+import 'package:basics/homepage.dart';
 import 'package:basics/postpage.dart';
 import 'package:flutter/material.dart';
 //import 'package:beton/widgets/pages/main_page.dart';
@@ -76,7 +77,7 @@ class LoginPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         //builder: (context) => CreateBetPage(),
-                        builder: (context) => PostPage(),
+                        builder: (context) => MainPage(),
                       ),
                     );
                   } else {

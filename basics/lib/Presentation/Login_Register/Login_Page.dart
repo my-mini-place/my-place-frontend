@@ -1,13 +1,12 @@
-import 'package:basics/Presentation/Login_Register/Login_Button_page.dart';
 import 'package:basics/Presentation/Login_Register/LogoWidget.dart';
 import 'package:basics/Presentation/Utils/Gaps.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter/widgets.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +18,28 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  late Animation<double> animation;
+  late AnimationController controller;
+  late int blockvalue = 0;
+  late int residencevalue = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(duration: const Duration(seconds: 2), vsync: this);
+    animation = Tween<double>(begin: 0, end: 30).animate(controller)
+      ..addListener(() {
+        setState(() {
+          blockvalue = animation.value.toInt();
+          residencevalue = (blockvalue * 22.23).toInt();
+        });
+      });
+    controller.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,12 +50,12 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               AppBar(
-                leadingWidth: 600,
+                leadingWidth: 400,
                 backgroundColor: Colors.black,
                 toolbarHeight: 70,
                 leading: const Padding(
                     padding: EdgeInsets.only(left: 30),
-                    child: LogoWidget(fontSize: 25)),
+                    child: LogoWidget(fontSize: 30)),
                 actions: [
                   Padding(
                     padding: const EdgeInsets.only(right: 30),
@@ -63,7 +83,6 @@ class _HomePageState extends State<HomePage> {
               Container(
                 constraints:
                     const BoxConstraints(maxHeight: 600, minHeight: 600),
-                color: Colors.red,
                 child: // You might adjust this to fit the aspect ratio of your image
 
                     LayoutBuilder(builder: (context, constraints) {
@@ -109,175 +128,75 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 20),
               Container(
-                padding: const EdgeInsets.all(16),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Column(
-                      children: [],
-                    ),
-                    Spacer(),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
+                  margin: const EdgeInsets.all(30),
+                  padding: const EdgeInsets.only(top: 20, bottom: 100),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            Text("$blockvalue",
+                                style: GoogleFonts.montserrat(
+                                    fontSize: 30, fontWeight: FontWeight.bold)),
+                            Text(
+                              "Bloków ktorymi zarządzamy",
+                              style: GoogleFonts.montserrat(fontSize: 20),
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 40),
+                      Flexible(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            Text("$residencevalue ",
+                                style: GoogleFonts.montserrat(
+                                    fontSize: 30, fontWeight: FontWeight.bold)),
+                            Text(
+                              "Mieszkań ktorymi zarządzamy",
+                              style: GoogleFonts.montserrat(fontSize: 20),
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 40),
+                      Flexible(
+                        flex: 2,
+                        child: Container(
+                          constraints: const BoxConstraints(maxWidth: 300),
+                          child: Column(
+                            children: [
+                              Center(
+                                child: Text("${blockvalue * 1329}",
+                                    style: GoogleFonts.montserrat(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              Center(
+                                child: Text(
+                                  "mieszkanców",
+                                  style: GoogleFonts.montserrat(fontSize: 20),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              const Padding(
+                padding: EdgeInsets.all(15.0),
                 child: Wrap(
                   spacing: 20,
                   runSpacing: 30,
                   alignment: WrapAlignment.center,
                   direction: Axis.horizontal,
                   children: [
-                    SizedBox(
-                      //  color: Colors.amber,
-                      width: 600,
-                      height: 200,
-                      child: Row(children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/categories/calendar.jpg'),
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
-                          //   padding: const EdgeInsets.all(10.0),
-                          width: 250,
-                          height: 200,
-                        ),
-                        SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  child: Text("Calendarz",
-                                      style: GoogleFonts.montserrat()),
-                                ),
-                                const Text(
-                                  "Najnowsze wydarzenia w twojej okolicy ",
-                                  overflow: TextOverflow.fade,
-                                  softWrap: true,
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ]),
-                    ),
-                    SizedBox(
-                      //  color: Colors.amber,
-                      width: 600,
-                      height: 200,
-                      child: Row(children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/categories/calendar.jpg'),
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
-                          //   padding: const EdgeInsets.all(10.0),
-                          width: 250,
-                          height: 200,
-                        ),
-                        SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  child: Text("Calendarz",
-                                      style: GoogleFonts.montserrat()),
-                                ),
-                                const Text(
-                                  "Najnowsze wydarzenia w twojej okolicy ",
-                                  overflow: TextOverflow.fade,
-                                  softWrap: true,
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ]),
-                    ),
-                    SizedBox(
-                      //  color: Colors.amber,
-                      width: 600,
-                      height: 200,
-                      child: Row(children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/categories/calendar.jpg'),
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
-                          //   padding: const EdgeInsets.all(10.0),
-                          width: 250,
-                          height: 200,
-                        ),
-                        SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  child: Text("Calendarz",
-                                      style: GoogleFonts.montserrat()),
-                                ),
-                                const Text(
-                                  "Najnowsze wydarzenia w twojej okolicy ",
-                                  overflow: TextOverflow.fade,
-                                  softWrap: true,
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ]),
-                    ),
-                    SizedBox(
-                      width: 600,
-                      height: 200,
-                      child: Row(children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image:
-                                    AssetImage('assets/categories/posty.jpeg'),
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
-                          //   padding: const EdgeInsets.all(10.0),
-                          width: 250,
-                          height: 200,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                child: Text("Posty",
-                                    style: GoogleFonts.montserrat()),
-                              ),
-                              const Text(
-                                  "Najnowsze ogloszenia zarzadców osiedla!")
-                            ],
-                          ),
-                        )
-                      ]),
-                    ),
+                    MyCategoryTile(),
+                    MyCategoryTile(),
                   ],
                 ),
               ),
@@ -319,6 +238,79 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class MyCategoryTile extends StatefulWidget {
+  const MyCategoryTile({
+    super.key,
+  });
+
+  @override
+  State<MyCategoryTile> createState() => _MyCategoryTileState();
+}
+
+class _MyCategoryTileState extends State<MyCategoryTile> {
+  double _scale = 1.0;
+
+  void _onHover(PointerEvent details) {
+    setState(() {
+      _scale = 1.05; // Skala powiększenia
+    });
+  }
+
+  void _onExit(PointerEvent details) {
+    setState(() {
+      _scale = 1.0; // Skala normalna
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      //  color: Colors.amber,
+      width: 600,
+      height: 200,
+      child: Row(children: [
+        MouseRegion(
+          onHover: _onHover,
+          onExit: _onExit,
+          child: AnimatedContainer(
+            transform: Matrix4.identity()..scale(_scale, _scale),
+            duration: const Duration(seconds: 1),
+            curve: Curves.fastOutSlowIn,
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/categories/calendar.jpg'),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            //   padding: const EdgeInsets.all(10.0),
+            width: 250,
+            height: 200,
+          ),
+        ),
+        Flexible(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Calendarz",
+                    style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.bold, fontSize: 20)),
+                gapH10,
+                const Text(
+                  "Najnowsze wydarzenia w twojej okolicy ",
+
+                  //  softWrap: true,
+                )
+              ],
+            ),
+          ),
+        )
+      ]),
     );
   }
 }

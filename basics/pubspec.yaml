@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.4.0-24.0.dev <4.0.0'
+  sdk: 3.3.4
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -38,6 +38,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   syncfusion_flutter_calendar: ^25.1.35
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_test:
@@ -56,16 +57,36 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
+
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
 
+
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
+       
+       
+   
+
   # To add assets to your application, add an assets section, like this:
   assets:
-   - my-place-frontend/Logo.jpg
+   - assets/
+   - assets/enter.jpg
    - assets/icon.jpg
    - assets/Logo.jpg
+   - assets/categories/calendar.jpg
+   - assets/categories/
+   - assets/categories/usterka.jpeg  
+   - assets/categories/dokumenty.jpg
+   - assets/categories/posty.jpeg
+   - assets/categories/calendar.jpg
+ 
+  
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

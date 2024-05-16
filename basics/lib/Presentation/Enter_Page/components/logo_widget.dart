@@ -19,7 +19,9 @@ class LogoWidget extends StatelessWidget {
             child: Text(
               'My',
               style: GoogleFonts.montserrat(
-                  color: Colors.green, fontSize: fontSize),
+                  color: const Color.fromARGB(255, 249, 115, 22),
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           Flexible(

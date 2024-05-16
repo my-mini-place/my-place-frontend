@@ -1,8 +1,9 @@
 import 'package:basics/Api/Auth_token_cubit/auth_cubit.dart';
 import 'package:basics/Domain/Interfaces/auth_interface.dart';
-import 'package:basics/Domain/Login.dart';
+
+import 'package:basics/Domain/auth_entities/login.dart';
+import 'package:basics/Domain/auth_entities/token.dart';
 import 'package:basics/Domain/register.dart';
-import 'package:basics/Domain/token.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';

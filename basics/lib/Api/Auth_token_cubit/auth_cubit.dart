@@ -1,13 +1,13 @@
 import 'package:basics/Api/Auth_token_cubit/auth_cubit.dart';
 import 'package:basics/Domain/Interfaces/auth_interface.dart';
-import 'package:basics/Domain/token.dart';
+import 'package:basics/Domain/auth_entities/token.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-part 'auth_state.dart';
+part 'Auth_state.dart';
 
 @LazySingleton()
 class AuthCubit extends HydratedCubit<AuthState> {

@@ -1,7 +1,8 @@
 import 'package:basics/DI.dart';
 
-import 'package:basics/Domain/auth_exception.dart';
-import 'package:basics/Domain/token.dart';
+import 'package:basics/Domain/auth_entities/auth_exception.dart';
+import 'package:basics/Domain/auth_entities/token.dart';
+
 import 'package:basics/Infrastructure/dio_client.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -44,7 +45,7 @@ class AuthService implements AuthInterface {
       } else {
         return const Left(AuthException.wrongEmailOrPass());
       }
-    } on DioException catch (e, s) {
+    } on DioException catch (e) {
       return const Left(AuthException.serverError());
     }
   }

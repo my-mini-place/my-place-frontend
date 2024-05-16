@@ -1,5 +1,5 @@
+import 'package:basics/Presentation/Enter_Page/components/logo_widget.dart';
 import 'package:basics/Presentation/Home/homepage.dart';
-import 'package:basics/Presentation/Login_Register/LogoWidget.dart';
 
 import 'package:flutter/material.dart';
 //import 'package:beton/widgets/pages/main_page.dart';

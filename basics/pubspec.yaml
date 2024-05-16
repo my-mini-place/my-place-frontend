@@ -31,14 +31,23 @@ dependencies:
   flutter:
     sdk: flutter
   table_calendar: ^3.0.1
-  http: ^0.13.5
+  http: ^1.2.1
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   syncfusion_flutter_calendar: ^25.1.35
-  google_fonts: ^4.0.4
+  google_fonts: ^6.2.1
+  freezed: ^2.5.2
+  dio: ^5.4.3+1
+  hydrated_bloc: ^9.1.5
+  get_it: ^7.7.0
+  dartz: ^0.10.1
+  injectable: ^2.4.1
+  json_annotation: ^4.9.0
+  injectable_generator: ^2.6.1
+  bloc: ^8.1.4
 
 dev_dependencies:
   flutter_test:
@@ -49,7 +58,9 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.9
+  json_serializable: ^6.8.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -65,11 +76,7 @@ flutter:
   uses-material-design: true
 
 
-  fonts:
-    - family: Montserrat
-      fonts:
-        - asset: assets/fonts/Montserrat-Regular.ttf
-       
+  
        
    
 

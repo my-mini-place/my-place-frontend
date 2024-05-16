@@ -277,6 +277,7 @@ class _MyCategoryTileState extends State<MyCategoryTile> {
           onHover: _onHover,
           onExit: _onExit,
           child: AnimatedContainer(
+            transformAlignment: Alignment.center,
             transform: Matrix4.identity()..scale(_scale, _scale),
             duration: const Duration(seconds: 1),
             curve: Curves.fastOutSlowIn,

@@ -25,7 +25,7 @@ class _LoginBoxState extends State<LoginBox> {
 
   @override
   Widget build(BuildContext context) {
-    String? password;
+    //String? password;
 
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {},
@@ -76,7 +76,7 @@ class _LoginBoxState extends State<LoginBox> {
                   padding: const EdgeInsets.all(16.0),
                   child: TextFormField(
                     onSaved: (String? value) {
-                      password = value;
+                      // password = value;
                     },
                     validator: (value) {
                       var errorMessage = '';

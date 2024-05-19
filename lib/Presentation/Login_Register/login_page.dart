@@ -1,12 +1,10 @@
-import 'package:basics/Domain/value_objects/colors.dart';
-import 'package:basics/Presentation/Login_Register/components/login_box.dart';
 import 'package:basics/Presentation/Login_Register/login_register_toggle.dart';
+import 'package:basics/Presentation/Site/app_bar_changer.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
-import 'package:basics/Presentation/appbar.dart';
+import 'package:basics/Presentation/Site/app_bar_big.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:google_fonts/google_fonts.dart';
 //import 'package:beton/widgets/pages/main_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -33,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
               //   width: 200,
               //   color: Colors.red,
               // ),
-              MyAppBar(),
+              MyAppBarSwitcher(),
 
               gapH40,
 

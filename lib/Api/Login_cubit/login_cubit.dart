@@ -40,11 +40,11 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> logout() async {
-    late Token token;
-    AuthState state = _authcubit.state;
-    if (state is AuthorizationState) {
-      token = state.token;
-    }
+    //late Token token;
+    // AuthState state = _authcubit.state;
+    // if (state is AuthorizationState) {
+    //   token = state.token;
+    // }
 
     await _authservice.logout("aa");
     _authcubit.logout();

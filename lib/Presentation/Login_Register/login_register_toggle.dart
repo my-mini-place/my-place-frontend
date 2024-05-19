@@ -1,6 +1,6 @@
 import 'package:basics/Presentation/Login_Register/components/login_box.dart';
 import 'package:basics/Presentation/Login_Register/components/register_box.dart';
-import 'package:basics/Presentation/Login_Register/login_page.dart';
+
 import 'package:flutter/material.dart';
 
 class LoginRegisterToggle extends StatefulWidget {

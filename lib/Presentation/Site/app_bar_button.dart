@@ -3,17 +3,21 @@ import 'package:google_fonts/google_fonts.dart';
 
 class MyAppBarButton extends StatefulWidget {
   const MyAppBarButton(
-      {super.key, required this.navigation, required this.text});
+      {super.key,
+      required this.navigation,
+      required this.text,
+      required this.fontcolor});
 
   final Function navigation;
   final String text;
+  final Color fontcolor;
 
   @override
   State<MyAppBarButton> createState() => _MyAppBarButtonState();
 }
 
 class _MyAppBarButtonState extends State<MyAppBarButton> {
-  late Color fontcolor = Colors.white;
+  late Color fontcolor = widget.fontcolor;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,7 @@ class _MyAppBarButtonState extends State<MyAppBarButton> {
       },
       onExit: (event) => {
         setState(() {
-          fontcolor = Colors.white;
+          fontcolor = fontcolor;
         })
       },
       child: GestureDetector(

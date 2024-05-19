@@ -30,13 +30,14 @@ class PageInfoState extends State<PageInfo>
     super.initState();
     controller =
         AnimationController(duration: const Duration(seconds: 3), vsync: this);
-    animation = Tween<double>(begin: 0, end: 965).animate(controller)
-      ..addListener(() {
-        setState(() {
-          blockvalue = animation.value.toInt();
-          residencevalue = (blockvalue * 10.5).toInt();
-        });
-      });
+    animation = Tween<double>(begin: 0, end: 965)
+        .animate(CurvedAnimation(parent: controller, curve: Curves.ease));
+    // ..addListener(() {
+    //   setState(() {
+    //     blockvalue = animation.value.toInt();
+    //     residencevalue = (blockvalue * 10.5).toInt();
+    //   });
+    // });
     controller.forward();
   }
 
@@ -45,61 +46,63 @@ class PageInfoState extends State<PageInfo>
     return Container(
         margin: const EdgeInsets.all(30),
         padding: const EdgeInsets.only(top: 20, bottom: 100),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-              flex: 2,
-              child: Column(
-                children: [
-                  Text("$blockvalue",
-                      style: GoogleFonts.montserrat(
-                          fontSize: 30, fontWeight: FontWeight.bold)),
-                  Text(
-                    "Bloków ktorymi zarządzamy",
-                    style: GoogleFonts.montserrat(fontSize: 20),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(width: 40),
-            Flexible(
-              flex: 2,
-              child: Column(
-                children: [
-                  Text("$residencevalue ",
-                      style: GoogleFonts.montserrat(
-                          fontSize: 30, fontWeight: FontWeight.bold)),
-                  Text(
-                    "Mieszkań ktorymi zarządzamy",
-                    style: GoogleFonts.montserrat(fontSize: 20),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(width: 40),
-            Flexible(
-              flex: 2,
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: 300),
-                child: Column(
-                  children: [
-                    Center(
-                      child: Text("${blockvalue * 1329}",
+        child: AnimatedBuilder(
+          animation: animation,
+          builder: (context, child) => Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      Text("${animation.value.toInt()}",
                           style: GoogleFonts.montserrat(
                               fontSize: 30, fontWeight: FontWeight.bold)),
-                    ),
-                    Center(
-                      child: Text(
-                        "mieszkanców",
+                      Text(
+                        "Bloków ktorymi zarządzamy",
                         style: GoogleFonts.montserrat(fontSize: 20),
-                      ),
+                      )
+                    ],
+                  )),
+              const SizedBox(width: 40),
+              Flexible(
+                flex: 2,
+                child: Column(
+                  children: [
+                    Text("${animation.value.toInt() * 11}",
+                        style: GoogleFonts.montserrat(
+                            fontSize: 30, fontWeight: FontWeight.bold)),
+                    Text(
+                      "Mieszkań ktorymi zarządzamy",
+                      style: GoogleFonts.montserrat(fontSize: 20),
                     )
                   ],
                 ),
               ),
-            ),
-          ],
+              const SizedBox(width: 40),
+              Flexible(
+                flex: 2,
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 300),
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Text("${(animation.value * 1329).toInt()}",
+                            style: GoogleFonts.montserrat(
+                                fontSize: 30, fontWeight: FontWeight.bold)),
+                      ),
+                      Center(
+                        child: Text(
+                          "mieszkanców",
+                          style: GoogleFonts.montserrat(fontSize: 20),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ));
   }
 }

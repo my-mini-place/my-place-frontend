@@ -1,8 +1,11 @@
 import 'package:basics/Domain/value_objects/options.dart';
 import 'package:basics/Presentation/Enter_Page/components/categories_title.dart';
 import 'package:basics/Presentation/Enter_Page/components/page_info.dart';
+import 'package:basics/Presentation/Site/app_bar_changer.dart';
 import 'package:basics/Presentation/Utils/Gaps.dart';
-import 'package:basics/Presentation/appBar.dart';
+import 'package:basics/Presentation/Site/footer.dart';
+import 'package:basics/Presentation/Site/app_bar_big.dart';
+import 'package:basics/Presentation/Enter_Page/components/map.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +29,7 @@ class _HomePageState extends State<EnterPage>
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width * 0.65;
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -33,7 +37,7 @@ class _HomePageState extends State<EnterPage>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const MyAppBar(),
+              const MyAppBarSwitcher(),
               Container(
                 constraints:
                     const BoxConstraints(maxHeight: 500, minHeight: 500),
@@ -86,6 +90,11 @@ class _HomePageState extends State<EnterPage>
               gapH40,
               const PageInfo(),
               gapH40,
+              const Divider(
+                thickness: 1,
+                color: Colors.black,
+              ),
+              gapH10,
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 40, top: 20),
@@ -115,40 +124,27 @@ class _HomePageState extends State<EnterPage>
                 ),
               ),
               gapH40,
-              Container(
-                margin: const EdgeInsets.only(top: 20),
+              const Divider(
+                thickness: 1,
                 color: Colors.black,
-                height: 150,
-                child: const Column(
-                  children: [
-                    gapH10,
-                    gapH10,
-                    gapH10,
-                    Text(
-                      'MyPlace is an app that makes living in society from your flat easier and happier',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                    Flexible(
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: EdgeInsets.all(5.0),
-                          child: Text(
-                            '© 2024 My Place. Wszelkie prawa zastrzeżone.',
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 189, 181, 181),
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+              ),
+              gapH10,
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 40, top: 20),
+                  child: Text(
+                    "Lokalizacja:",
+                    style: GoogleFonts.montserrat(fontSize: 40),
+                  ),
                 ),
               ),
+              Center(
+                  child: SizedBox(
+                      height: 400,
+                      width: width * 0.8,
+                      child: const MapSample())),
+              gapH40,
+              const Footer(),
             ],
           ),
         ),

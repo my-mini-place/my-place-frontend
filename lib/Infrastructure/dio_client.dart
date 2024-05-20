@@ -7,7 +7,7 @@ class DioClient {
 
   DioClient() {
     _dio.options = BaseOptions(
-      baseUrl: "localtwojastara",
+      baseUrl: "",
       receiveTimeout: const Duration(seconds: 10000),
       connectTimeout: const Duration(seconds: 10000),
       sendTimeout: const Duration(seconds: 10000),

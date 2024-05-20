@@ -29,7 +29,7 @@ class _MyAppBarButtonState extends State<MyAppBarButton> {
       },
       onExit: (event) => {
         setState(() {
-          fontcolor = fontcolor;
+          fontcolor = Colors.white;
         })
       },
       child: GestureDetector(

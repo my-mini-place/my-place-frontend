@@ -1,4 +1,6 @@
+import 'package:basics/Presentation/Calendar_Page/Calendar.dart';
 import 'package:basics/Presentation/Enter_Page/enter_page.dart';
+import 'package:basics/Presentation/Home_Page/homepage.dart';
 import 'package:basics/Presentation/Login_Register/login_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -18,6 +20,17 @@ final GoRouter routerConfig = GoRouter(
         name: 'login',
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: LoginPage())),
+    GoRoute(
+        path: '/home/calendar',
+        name: 'calendar',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: Calendar1())),
+
+    GoRoute(
+        path: '/home',
+        name: 'home',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: MainPage())),
     // builder: (BuildContext context, GoRouterState state) {
     //   return const LoginPage();
   ],

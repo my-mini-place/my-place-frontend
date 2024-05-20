@@ -72,14 +72,7 @@ class MyAppBarBig extends StatelessWidget {
                       child: MyAppBarButton(
                         fontcolor: Colors.white,
                         text: "Home",
-                        navigation: () => {},
-                      )),
-                  Padding(
-                      padding: const EdgeInsets.only(right: 30),
-                      child: MyAppBarButton(
-                        fontcolor: Colors.white,
-                        text: "Home",
-                        navigation: () => {},
+                        navigation: () => {context.go("/home")},
                       )),
                   if (state is AuthorizationInitial)
                     Padding(

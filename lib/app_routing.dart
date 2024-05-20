@@ -1,7 +1,12 @@
+import 'package:basics/Presentation/Admin_Panel_Page/Admin_Page.dart';
 import 'package:basics/Presentation/Calendar_Page/Calendar.dart';
+import 'package:basics/Presentation/Calendar_Page/CalendarPage.dart';
+import 'package:basics/Presentation/Documents_Page/documents_page.dart';
 import 'package:basics/Presentation/Enter_Page/enter_page.dart';
 import 'package:basics/Presentation/Home_Page/homepage.dart';
 import 'package:basics/Presentation/Login_Register/login_page.dart';
+import 'package:basics/Presentation/Posts_Page/post_page.dart';
+import 'package:basics/Presentation/Profile_Page/profile_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,13 +29,35 @@ final GoRouter routerConfig = GoRouter(
         path: '/home/calendar',
         name: 'calendar',
         pageBuilder: (context, state) =>
-            const NoTransitionPage(child: Calendar1())),
+            const NoTransitionPage(child: CalendarPage())),
 
+    GoRoute(
+        path: '/home/profile',
+        name: 'profile',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: ProfilePage())),
     GoRoute(
         path: '/home',
         name: 'home',
         pageBuilder: (context, state) =>
-            const NoTransitionPage(child: MainPage())),
+            const NoTransitionPage(child: HomePage())),
+    GoRoute(
+        path: '/home/documents',
+        name: 'doc',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: DocumentsPage())),
+
+    GoRoute(
+        path: '/home/admin-panel',
+        name: 'admin',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: AdminPanelPage())),
+
+    GoRoute(
+        path: '/home/posts',
+        name: 'posts',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: PostPage())),
     // builder: (BuildContext context, GoRouterState state) {
     //   return const LoginPage();
   ],

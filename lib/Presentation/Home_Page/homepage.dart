@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-class MainPage extends StatelessWidget {
-  const MainPage({
+class HomePage extends StatelessWidget {
+  const HomePage({
     super.key,
   });
 
@@ -39,42 +39,42 @@ class MainPage extends StatelessWidget {
                     title: "Profil",
                     icon: Icons.person,
                     navigation: () {
-                      context.go("/home/profil");
+                      context.goNamed("profile");
                     },
                   ),
                   FunctionIcon(
                     title: "Usterki",
                     icon: Icons.construction,
                     navigation: () {
-                      context.go("/home/usterka");
+                      context.goNamed("/home/usterka");
                     },
                   ),
                   FunctionIcon(
                     title: "Ogłoszenia",
                     icon: Icons.assignment_late_outlined,
                     navigation: () {
-                      context.go("/home/posts");
+                      context.goNamed("posts");
                     },
                   ),
                   FunctionIcon(
                     title: "Panel Administratora",
                     icon: Icons.admin_panel_settings,
                     navigation: () {
-                      context.go("/home/admin_panel");
+                      context.goNamed("admin");
                     },
                   ),
                   FunctionIcon(
                     title: "Kalendarz",
                     icon: Icons.calendar_today,
                     navigation: () {
-                      context.go("/home/calendar");
+                      context.goNamed("calendar");
                     },
                   ),
                   FunctionIcon(
                     title: "Dokumenty",
                     icon: Icons.edit_document,
                     navigation: () {
-                      context.go("/home/documents");
+                      context.goNamed("doc");
                     },
                   ),
                 ],

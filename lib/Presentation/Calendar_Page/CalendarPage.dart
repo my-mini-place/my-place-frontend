@@ -6,11 +6,8 @@ class CalendarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Calendar Page'),
-      ),
-      body: const Center(
+    return const Scaffold(
+      body: Center(
         child: Calendar1(), // Display Calendar1 widget here
       ),
     );

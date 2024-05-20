@@ -4,8 +4,8 @@ import 'package:basics/Presentation/Enter_Page/components/page_info.dart';
 import 'package:basics/Presentation/Site/app_bar_changer.dart';
 import 'package:basics/Presentation/Utils/Gaps.dart';
 import 'package:basics/Presentation/Site/footer.dart';
-import 'package:basics/Presentation/Site/app_bar_big.dart';
-import 'package:basics/Presentation/Enter_Page/components/map.dart';
+//import 'package:basics/Presentation/Site/app_bar_big.dart';
+//import 'package:basics/Presentation/Enter_Page/components/map.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -138,11 +138,11 @@ class _HomePageState extends State<EnterPage>
                   ),
                 ),
               ),
-              Center(
-                  child: SizedBox(
-                      height: 400,
-                      width: width * 0.8,
-                      child: const MapSample())),
+              // Center(
+              //     child: SizedBox(
+              //         height: 400,
+              //         width: width * 0.8,
+              //         child: const MapSample())),
               gapH40,
               const Footer(),
             ],

@@ -29,7 +29,6 @@ class _HomePageState extends State<EnterPage>
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width * 0.65;
     return Scaffold(
       body: Container(
         color: Colors.white,

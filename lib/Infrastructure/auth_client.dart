@@ -37,7 +37,7 @@ class AuthService implements AuthInterface {
   Future<Either<AuthException, Token>> login(String email, String pass) async {
     try {
       final result = await dioClient.dio.post<Map<String, dynamic>>(
-          "https://localhost:54487/api/Security/login",
+          "https://localhost:51076/api/Security/login",
           data: {
             'email': "Admin123@gmail.com",
             'password': "Admin123",

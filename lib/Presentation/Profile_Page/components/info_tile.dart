@@ -18,7 +18,6 @@ class InfoTile extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
           ),
           Container(
-            width: 400, // Stała szerokość dla Container
             height: 40,
             decoration: BoxDecoration(
               border: Border.all(
@@ -27,8 +26,7 @@ class InfoTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0), // Dla odstępów wokół tekstu
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(description),

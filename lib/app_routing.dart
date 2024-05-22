@@ -1,4 +1,5 @@
 import 'package:basics/Presentation/Admin_Panel_Page/Admin_Page.dart';
+import 'package:basics/Presentation/Admin_Panel_Page/user_list_page.dart';
 import 'package:basics/Presentation/Calendar_Page/CalendarPage.dart';
 
 import 'package:basics/Presentation/Documents_Page/documents_page.dart';
@@ -59,6 +60,13 @@ final GoRouter routerConfig = GoRouter(
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: PostPage())),
     // builder: (BuildContext context, GoRouterState state) {
+
+    GoRoute(
+        path: '/home/users-list',
+        name: 'userslist',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: UserListPage())),
+
     //   return const LoginPage();
   ],
 );

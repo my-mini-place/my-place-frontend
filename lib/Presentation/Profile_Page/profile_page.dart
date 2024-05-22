@@ -17,8 +17,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return AppPageBasics(withfoot: true, children: [
-      SizedBox(
-        width: 400,
+      FractionallySizedBox(
+        widthFactor: 0.40,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

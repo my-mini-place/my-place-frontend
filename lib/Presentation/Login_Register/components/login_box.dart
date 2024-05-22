@@ -57,6 +57,10 @@ class _LoginBoxState extends State<LoginBox> {
                 }
               }
               break;
+
+            case LoginAuthorized:
+              context.goNamed('home');
+              break;
           }
         },
         child: Container(

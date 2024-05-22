@@ -15,18 +15,26 @@ class AppPageBasics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //bottomNavigationBar: const Footer(),
-
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const MyAppBarSwitcher(),
-            ...children,
-            if (withfooter) const Footer(),
-          ],
-        ),
-      ),
-      //  bottomSheet: const Footer(),
+      body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        return SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              ConstrainedBox(
+                constraints:
+                    BoxConstraints(minHeight: constraints.maxHeight - 200),
+                child: Column(
+                  children: [
+                    const MyAppBarSwitcher(),
+                    ...children,
+                  ],
+                ),
+              ),
+              const Footer(),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

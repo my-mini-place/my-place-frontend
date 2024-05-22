@@ -51,48 +51,46 @@ class MyAppBarBig extends StatelessWidget {
                 ],
               ),
             ),
-            LayoutBuilder(
-              builder: (context, constrains) => AppBar(
-                leadingWidth: 400,
-                backgroundColor: Colors.black,
-                toolbarHeight: 70,
-                leading: const Padding(
-                    padding: EdgeInsets.only(left: 70),
-                    child: LogoWidget(fontSize: 30)),
-                actions: [
+            AppBar(
+              leadingWidth: 400,
+              backgroundColor: Colors.black,
+              toolbarHeight: 70,
+              leading: const Padding(
+                  padding: EdgeInsets.only(left: 70),
+                  child: LogoWidget(fontSize: 30)),
+              actions: [
+                Padding(
+                    padding: const EdgeInsets.only(right: 30),
+                    child: MyAppBarButton(
+                      fontcolor: Colors.white,
+                      text: "Stara",
+                      navigation: () => {},
+                    )),
+                Padding(
+                    padding: const EdgeInsets.only(right: 30),
+                    child: MyAppBarButton(
+                      fontcolor: Colors.white,
+                      text: "Home",
+                      navigation: () => {context.go("/home")},
+                    )),
+                if (state is AuthorizationInitial)
                   Padding(
                       padding: const EdgeInsets.only(right: 30),
                       child: MyAppBarButton(
                         fontcolor: Colors.white,
-                        text: "Stara",
-                        navigation: () => {},
+                        text: "Login",
+                        navigation: () => {context.go('/login')},
                       )),
-                  Padding(
-                      padding: const EdgeInsets.only(right: 30),
-                      child: MyAppBarButton(
-                        fontcolor: Colors.white,
-                        text: "Home",
-                        navigation: () => {context.go("/home")},
-                      )),
-                  if (state is AuthorizationInitial)
-                    Padding(
-                        padding: const EdgeInsets.only(right: 30),
-                        child: MyAppBarButton(
-                          fontcolor: Colors.white,
-                          text: "Login",
-                          navigation: () => {context.go('/login')},
-                        )),
-                  const Padding(
-                    padding: EdgeInsets.only(right: 40),
-                    child: Center(
-                      child: CircleAvatar(
-                        radius: 25,
-                        backgroundImage: AssetImage('assets/icon.jpg'),
-                      ),
+                const Padding(
+                  padding: EdgeInsets.only(right: 40),
+                  child: Center(
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundImage: AssetImage('assets/icon.jpg'),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         );

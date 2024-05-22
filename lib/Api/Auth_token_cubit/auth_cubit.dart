@@ -30,10 +30,15 @@ class AuthCubit extends Cubit<AuthState> with HydratedMixin<AuthState> {
   @override
   Map<String, dynamic>? toJson(AuthState state) {
     if (state is AuthorizationState) {
-      return {
-        'type': 'AuthorizationState',
-        'token': state.token,
-      };
+      // return {
+      //   'type': 'AuthorizationState',
+      //   'token': state.token,
+      // };]
+      Map<String, dynamic> result = {};
+      result['type'] = 'AuthorizationState';
+      result['token'] = state.token.accessToken;
+
+      return result;
     } else if (state is AuthorizationInitial) {
       return {'type': 'AuthorizationInitial'};
     }

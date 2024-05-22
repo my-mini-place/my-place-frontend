@@ -16,7 +16,7 @@ void main() async {
   configureDependencies();
 
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: kIsWeb ? HydratedStorage.webStorageDirectory : null!,
+    storageDirectory: HydratedStorage.webStorageDirectory,
   );
 
   runApp(const MyApp());

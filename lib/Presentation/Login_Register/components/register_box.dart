@@ -1,4 +1,3 @@
-import 'package:basics/Domain/register.dart';
 import 'package:basics/Domain/value_objects/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -73,8 +72,8 @@ class _RegisterBoxState extends State<RegisterBox> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    String username = _usernameController.text;
-                    String enteredPassword = _passwordController.text;
+                    // String username = _usernameController.text;
+                    // String enteredPassword = _passwordController.text;
                   },
                   style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(myOrange)),

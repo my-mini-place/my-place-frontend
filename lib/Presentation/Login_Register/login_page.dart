@@ -1,8 +1,7 @@
 import 'package:basics/Presentation/Login_Register/login_register_toggle.dart';
-import 'package:basics/Presentation/Site/app_bar_changer.dart';
+
 import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
-import 'package:basics/Presentation/Site/app_bar_big.dart';
 
 import 'package:flutter/material.dart';
 
@@ -16,9 +15,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _passwordController = TextEditingController();
+  // final TextEditingController _passwordController = TextEditingController();
 
-  final TextEditingController _usernameController = TextEditingController();
+  // final TextEditingController _usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

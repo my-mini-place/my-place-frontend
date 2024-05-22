@@ -1,10 +1,8 @@
 import 'package:basics/Presentation/Profile_Page/components/info_tile.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:injectable/injectable.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

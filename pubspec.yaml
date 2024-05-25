@@ -60,6 +60,8 @@ dependencies:
   google_maps_flutter: ^2.6.1
   searchable_listview: ^2.13.0
   alert_dialog: ^1.0.2
+  faker: ^2.1.0
+  lottie: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -105,6 +107,7 @@ flutter:
    - assets/categories/dokumenty.jpg
    - assets/categories/posty.jpeg
    - assets/categories/calendar.jpg
+   - assets/RegisterDone.json
  
   
 

@@ -22,9 +22,9 @@ class LoginCubit extends Cubit<LoginState> {
     var response = await _authservice.register(register);
 
     response.fold((error) => emit(LoginError()), (token) async {
-      //  emit(LoginAuthorized());
+      emit(LoginAuthorized());
 
-      await login(Login(register.Email, register.Password));
+      /// await login(Login(register.Email, register.Password));
       // _authcubit.setToken();
     });
   }

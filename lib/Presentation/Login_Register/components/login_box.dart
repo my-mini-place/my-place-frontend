@@ -102,6 +102,11 @@ class FormWidget extends StatelessWidget {
       key: _formKey,
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextButton(
+                onPressed: () {}, child: const Text("Zaloguj jako admin")),
+          ),
           Text("Logowanie",
               style: GoogleFonts.montserrat(
                   fontSize: 30,

@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
       SizedBox(height: 20),
       LoginRegisterToggle(),
       SizedBox(
-        height: 300,
+        height: 100,
       )
     ]);
   }

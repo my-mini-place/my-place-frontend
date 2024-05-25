@@ -1,6 +1,7 @@
 import 'package:basics/DI.dart';
 
 import 'package:basics/Domain/auth_entities/auth_exception.dart';
+import 'package:basics/Domain/auth_entities/register.dart';
 import 'package:basics/Domain/auth_entities/token.dart';
 
 import 'package:basics/Infrastructure/dio_client.dart';
@@ -17,14 +18,14 @@ class AuthService implements AuthInterface {
   final dioClient = getIt.get<DioClient>();
 
   @override
-  Future<Either<AuthException, Token>> register(
-      String email, String pass, String confirmPass) async {
+  Future<Either<AuthException, String>> register(Register register) async {
     try {
-      final result = await dioClient.dio.post<Map<String, dynamic>>(
-          "twpkastaara",
-          data: {'email': email, 'pass': pass, 'confirmPass': confirmPass});
-      if (result.data != null) {
-        return Right(Token.fromJson(result.data!));
+      final result = await dioClient.dio.post<String>(
+          "https://localhost:51076/api/Security/register",
+          data: register.toJson());
+
+      if (result.statusCode == 200) {
+        return const Right("IsGood");
       } else {
         return const Left(AuthException.wrongEmailOrPass());
       }
@@ -54,7 +55,7 @@ class AuthService implements AuthInterface {
 
   @override
   Future<Either<AuthException, Unit>> logout(String idToken) {
-    throw UnimplementedError();
+    throw const Right("OK");
   }
 
   @override

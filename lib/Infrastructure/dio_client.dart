@@ -8,9 +8,9 @@ class DioClient {
   DioClient() {
     _dio.options = BaseOptions(
       baseUrl: "",
-      receiveTimeout: const Duration(seconds: 10000),
-      connectTimeout: const Duration(seconds: 10000),
-      sendTimeout: const Duration(seconds: 10000),
+      receiveTimeout: const Duration(seconds: 100000),
+      connectTimeout: const Duration(seconds: 100000),
+      sendTimeout: const Duration(seconds: 100000),
     );
   }
 

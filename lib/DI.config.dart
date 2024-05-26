@@ -11,10 +11,11 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import 'Api/Auth_token_cubit/auth_cubit.dart' as _i6;
-import 'Api/Login_cubit/login_cubit.dart' as _i7;
+import 'Api/Auth_token_cubit/auth_cubit.dart' as _i7;
+import 'Api/Forgot_password_cubit/forgot_cubit.dart' as _i6;
+import 'Api/Login_cubit/login_cubit.dart' as _i8;
 import 'Domain/Interfaces/auth_interface.dart' as _i4;
-import 'Infrastructure/auth_client.dart' as _i5;
+import 'Infrastructure/auth_service.dart' as _i5;
 import 'Infrastructure/dio_client.dart' as _i3;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -30,11 +31,13 @@ extension GetItInjectableX on _i1.GetIt {
     );
     gh.singleton<_i3.DioClient>(() => _i3.DioClient());
     gh.lazySingleton<_i4.AuthInterface>(() => _i5.AuthService());
-    gh.lazySingleton<_i6.AuthCubit>(
-        () => _i6.AuthCubit(gh<_i4.AuthInterface>()));
-    gh.lazySingleton<_i7.LoginCubit>(() => _i7.LoginCubit(
+    gh.lazySingleton<_i6.ForgotPasswordCubit>(
+        () => _i6.ForgotPasswordCubit(gh<_i4.AuthInterface>()));
+    gh.lazySingleton<_i7.AuthCubit>(
+        () => _i7.AuthCubit(gh<_i4.AuthInterface>()));
+    gh.lazySingleton<_i8.LoginCubit>(() => _i8.LoginCubit(
           gh<_i4.AuthInterface>(),
-          gh<_i6.AuthCubit>(),
+          gh<_i7.AuthCubit>(),
         ));
     return this;
   }

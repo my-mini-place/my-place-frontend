@@ -1,12 +1,8 @@
 import 'package:alert_dialog/alert_dialog.dart';
 import 'package:basics/Api/Login_cubit/login_cubit.dart';
-import 'package:basics/Domain/auth_entities/register.dart';
 
-import 'package:basics/Domain/value_objects/colors.dart';
 import 'package:basics/Presentation/Login_Register/components/RegisterForm.dart';
-import 'package:basics/Presentation/Login_Register/components/login_box.dart';
-import 'package:basics/Presentation/Utils/gaps.dart';
-import 'package:basics/Presentation/Utils/sizes.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

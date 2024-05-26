@@ -4,7 +4,7 @@ import 'package:basics/Presentation/Enter_Page/components/logo_widget.dart';
 import 'package:basics/Presentation/Site/app_bar_button.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -66,8 +66,11 @@ class MyAppBarBig extends StatelessWidget {
                       child: MyAppBarButton(
                         fontcolor: Colors.white,
                         text: "Logout",
-                        navigation: () async =>
-                            {await context.read<LoginCubit>().logout()},
+                        navigation: () async {
+                          await context.read<LoginCubit>().logout();
+
+                          context.goNamed('enter');
+                        },
                       )),
                 Padding(
                     padding: const EdgeInsets.only(right: 30),

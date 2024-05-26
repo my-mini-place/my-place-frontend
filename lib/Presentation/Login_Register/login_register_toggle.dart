@@ -18,12 +18,10 @@ class _LoginRegisterState extends State<LoginRegisterToggle> {
 
   @override
   Widget build(BuildContext context) {
-    if (showSignIn) {
-      return LoginBox(
-        toggle: toggleView,
-      );
-    } else {
-      return RegisterBox(toggle: toggleView);
-    }
+    return Column(children: [
+      showSignIn == true
+          ? LoginBox(toggle: toggleView)
+          : RegisterBox(toggle: toggleView),
+    ]);
   }
 }

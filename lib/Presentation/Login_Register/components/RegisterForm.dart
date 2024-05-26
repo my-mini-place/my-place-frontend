@@ -3,10 +3,11 @@ import 'package:basics/Domain/auth_entities/register.dart';
 import 'package:basics/Domain/value_objects/colors.dart';
 import 'package:basics/Presentation/Login_Register/components/register_box.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
-import 'package:basics/Presentation/Utils/sizes.dart';
+
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegisterForm extends StatelessWidget {
@@ -207,7 +208,6 @@ class RegisterForm extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SizedBox(
-                  height: LoginRegisterTextFieldHeight,
                   child: TextFormField(
                     onSaved: (String? value) {
                       // password = value;
@@ -281,7 +281,9 @@ class RegisterForm extends StatelessWidget {
                         width: 10,
                       ),
                       InkWell(
-                          onTap: () => widget.toggle(),
+                          onTap: () {
+                            context.goNamed("forgot");
+                          },
                           child: const Text(
                             "Odzyskaj hasło",
                             style: TextStyle(fontWeight: FontWeight.bold),

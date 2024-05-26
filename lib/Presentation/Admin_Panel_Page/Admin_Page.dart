@@ -88,44 +88,38 @@ class AdminOptionTile extends StatelessWidget {
             ]),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
-            //  color: Colors.amber,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  //   color: Colors.blue,
-                  child: const Icon(
-                    Icons.person,
-                    size: 35,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.person,
+                size: 35,
+              ),
+              Expanded(
+                child: Container(
+                  //   color: Colors.red,
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      gapH10,
+                      Text(
+                        "Użytkownicy",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                        child: Text(
+                          "Zmien role, usuń lub zmień dane użytkownika!",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      gapH10,
+                    ],
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    //   color: Colors.red,
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        gapH10,
-                        Text(
-                          "Użytkownicy",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 5),
-                          child: Text(
-                            "Zmien role, usuń lub zmień dane użytkownika!",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ),
-                        gapH10,
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

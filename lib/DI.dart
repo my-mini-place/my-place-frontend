@@ -1,3 +1,5 @@
+import 'package:basics/Api/Account_Managment/User_info/user_info_cubit.dart';
+import 'package:basics/Api/Account_Managment/Users_cubit/users_cubit.dart';
 import 'package:basics/Api/Auth_token_cubit/auth_cubit.dart';
 import 'package:basics/Api/Forgot_password_cubit/forgot_cubit.dart';
 import 'package:basics/Api/Login_cubit/login_cubit.dart';
@@ -34,7 +36,9 @@ class DependencyInjection extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt.get<ForgotPasswordCubit>(),
-        )
+        ),
+        BlocProvider(create: (context) => getIt.get<UsersCubit>()),
+        BlocProvider(create: (context) => getIt.get<UserInfoCubit>()),
       ],
       child: inputWidget,
     );

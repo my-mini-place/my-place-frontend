@@ -72,13 +72,14 @@ class MyAppBarBig extends StatelessWidget {
                           context.goNamed('enter');
                         },
                       )),
-                Padding(
-                    padding: const EdgeInsets.only(right: 30),
-                    child: MyAppBarButton(
-                      fontcolor: Colors.white,
-                      text: "Home",
-                      navigation: () => {context.go("/home")},
-                    )),
+                if (state is AuthorizationState)
+                  Padding(
+                      padding: const EdgeInsets.only(right: 30),
+                      child: MyAppBarButton(
+                        fontcolor: Colors.white,
+                        text: "Home",
+                        navigation: () => {context.go("/home")},
+                      )),
                 if (state is AuthorizationInitial)
                   Padding(
                       padding: const EdgeInsets.only(right: 30),

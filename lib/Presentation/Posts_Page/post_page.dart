@@ -1,5 +1,9 @@
+import 'package:basics/Presentation/Posts_Page/post_add_dialog.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
+import 'package:basics/Presentation/Utils/gaps.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class PostPage extends StatefulWidget {
   const PostPage({super.key});
@@ -10,12 +14,148 @@ class PostPage extends StatefulWidget {
 
 class _PostPageState extends State<PostPage> {
   @override
+  bool isCheck = true;
+
+  @override
   Widget build(BuildContext context) {
-    return const AppPageBasics(children: [
-      Text("posty"),
+    return AppPageBasics(children: [
+      FractionallySizedBox(
+        widthFactor: 0.40,
+        child: Column(
+          children: [
+            gapH10,
+            Container(
+              margin: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color.fromARGB(255, 194, 194, 194),
+                        blurRadius: 3,
+                        blurStyle: BlurStyle.inner,
+                        spreadRadius: 1)
+                  ]),
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Align(
+                        alignment: Alignment.topLeft,
+                        child: CircleAvatar(
+                            minRadius: 20,
+                            backgroundImage: AssetImage('assets/icon.jpg'))),
+                  ),
+                  Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: TextField(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                const AddPostDialog());
+                      },
+                      decoration: const InputDecoration(
+                          hintText: "O czym myślisz adminie? Dodaj posta!",
+                          filled: true,
+                          fillColor: Color.fromARGB(255, 241, 239, 239),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 0,
+                                style: BorderStyle.none,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)))),
+                    ),
+                  )),
+                ],
+              ),
+            ),
+
+            // jesli ktos jest adminem
+            gapH10,
+            ...List.generate(
+              10,
+              (index) => Container(
+                margin: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Color.fromARGB(255, 194, 194, 194),
+                          blurRadius: 3,
+                          blurStyle: BlurStyle.inner,
+                          spreadRadius: 1)
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Align(
+                                alignment: Alignment.topLeft,
+                                child: CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage('assets/icon.jpg'))),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Administrator"),
+                              Text("24.01.2024"),
+                            ],
+                          )
+                        ],
+                      ),
+                      gapH10,
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                            "ROLE oin Trilogy! Top talents in AI application development are needed. Required skills include Python, SQL, Software Development, Java, JavaScript, C++, Linux, MySQL, and C#. For more details, please visit the job page. "),
+                      ),
+                      Row(
+                        children: [
+                          Checkbox(
+                              value: isCheck,
+                              onChanged: (loool) {
+                                setState(() {
+                                  isCheck = !isCheck;
+                                });
+                              }),
+                          const Text("option 1"),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Checkbox(
+                              value: isCheck,
+                              onChanged: (loool) {
+                                setState(() {
+                                  isCheck = !isCheck;
+                                });
+                              }),
+                          const Text("option 2"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     ]);
   }
 }
+
+
 
 // import 'dart:convert';
 // import 'package:flutter/material.dart';

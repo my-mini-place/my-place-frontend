@@ -24,6 +24,14 @@ class _LoginBoxState extends State<LoginBox> {
   final TextEditingController _usernameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
@@ -102,6 +110,16 @@ class FormWidget extends StatelessWidget {
       key: _formKey,
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextButton(
+                onPressed: () async {
+                  await context
+                      .read<LoginCubit>()
+                      .login(Login("Admin123@gmail.com", "Admin123"));
+                },
+                child: const Text("Zaloguj jako admin")),
+          ),
           Text("Logowanie",
               style: GoogleFonts.montserrat(
                   fontSize: 30,
@@ -189,16 +207,32 @@ class FormWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Center(
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Nie masz konta? "),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Nie masz konta? "),
+                      InkWell(
+                          onTap: () => widget.toggle(),
+                          child: const Text(
+                            "Zarejestruj się teraz.",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   InkWell(
-                      onTap: () => widget.toggle(),
+                      onTap: () {
+                        context.goNamed("forgot");
+                      },
                       child: const Text(
-                        "Rejestruj się teraz.",
+                        "Odzyskaj hasło",
                         style: TextStyle(fontWeight: FontWeight.bold),
-                      ))
+                      )),
                 ],
               ),
             ),

@@ -1,6 +1,15 @@
-import 'package:basics/Domain/value_objects/colors.dart';
+import 'package:alert_dialog/alert_dialog.dart';
+import 'package:basics/Api/Login_cubit/login_cubit.dart';
+
+import 'package:basics/Presentation/Login_Register/components/RegisterForm.dart';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:faker/faker.dart';
+import 'package:lottie/lottie.dart';
 
 class RegisterBox extends StatefulWidget {
   const RegisterBox({
@@ -15,89 +24,74 @@ class RegisterBox extends StatefulWidget {
 }
 
 class _RegisterBoxState extends State<RegisterBox> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
 
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _surnameController = TextEditingController();
+  final TextEditingController _numberController = TextEditingController();
+  final TextEditingController _repeatpasswordController =
+      TextEditingController();
+
+  var faker = Faker();
+  bool isnotLoading = true;
+
+  late Widget FormWidget = RegisterForm(
+      formKey: _formKey,
+      nameController: _nameController,
+      faker: faker,
+      emailController: _emailController,
+      passwordController: _passwordController,
+      repeatpasswordController: _repeatpasswordController,
+      numberController: _numberController,
+      surnameController: _surnameController,
+      widget: widget);
+
+  late Widget MainWidget = FormWidget;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        constraints: const BoxConstraints(maxWidth: 600),
-        child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Text("Rejestracja",
-                    style: GoogleFonts.montserrat(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 123, 121, 121))),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextField(
-                    controller: _usernameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
+    return BlocListener<LoginCubit, LoginState>(
+      listener: (context, state) {
+        if (state is LoginLoading) {
+          setState(() {
+            MainWidget = const CircularProgressIndicator();
+          });
+        }
+
+        if (state is LoginError) {
+          alert(context, title: const Text('Alert'));
+          setState(() {
+            MainWidget = FormWidget;
+          });
+        }
+
+        if (state is LoginAuthorized) {
+          setState(() {
+            MainWidget = SizedBox(
+                width: 200,
+                height: 300,
+                child: Column(
+                  children: [
+                    Lottie.asset(
+                      'assets/RegisterDone.json',
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'PleaseEnterText';
-                      }
-                      return null;
-                    },
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
+                    Text(
+                      textAlign: TextAlign.center,
+                      "Rejestracja powiodła się! Zaloguj się!",
+                      style: GoogleFonts.montserrat(fontSize: 15),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    // String username = _usernameController.text;
-                    // String enteredPassword = _passwordController.text;
-                  },
-                  style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(myOrange)),
-                  child: const Text('Login',
-                      style: TextStyle(color: Colors.white)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Masz konto? "),
-                        InkWell(
-                            onTap: () => widget.toggle(),
-                            child: const Text(
-                              "Zaloguj się teraz.",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ))
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            )));
+                  ],
+                ));
+          });
+
+          Future.delayed(const Duration(seconds: 4), () {
+            widget.toggle();
+          });
+        }
+      },
+      child: MainWidget,
+    );
   }
 }

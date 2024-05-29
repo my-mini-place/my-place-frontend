@@ -1,3 +1,4 @@
+import 'package:basics/Domain/value_objects/colors.dart';
 import 'package:basics/Domain/value_objects/options.dart';
 import 'package:basics/Presentation/Enter_Page/components/categories_title.dart';
 import 'package:basics/Presentation/Enter_Page/components/page_info.dart';
@@ -26,6 +27,20 @@ class _HomePageState extends State<EnterPage>
   void initState() {
     super.initState();
   }
+
+  void loginButtononHover() {
+    setState(() {
+      loginbuttoncolor = const Color.fromARGB(255, 212, 96, 0);
+    });
+  }
+
+  void loginButtononExit() {
+    setState(() {
+      loginbuttoncolor = myOrange;
+    });
+  }
+
+  Color loginbuttoncolor = myOrange;
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +79,18 @@ class _HomePageState extends State<EnterPage>
                                     color: Colors.white, fontSize: 20)),
                             gapH10,
                             MouseRegion(
-                              onHover: (event) => {},
+                              onHover: (event) {
+                                loginButtononHover();
+                              },
+                              onExit: (event) {
+                                loginButtononExit();
+                              },
                               child: GestureDetector(
                                 onTap: () => context.go('/login'),
                                 child: Container(
                                   padding: const EdgeInsets.all(10),
                                   width: 100,
-                                  color:
-                                      const Color.fromARGB(255, 249, 115, 22),
+                                  color: loginbuttoncolor,
                                   child: const Center(
                                       child: Text(
                                     "Zaloguj się",

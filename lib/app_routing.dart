@@ -4,6 +4,8 @@ import 'package:basics/Presentation/Calendar_Page/CalendarPage.dart';
 
 import 'package:basics/Presentation/Documents_Page/documents_page.dart';
 import 'package:basics/Presentation/Enter_Page/enter_page.dart';
+import 'package:basics/Presentation/ForgotPassword_Page/forgot_password_page.dart';
+import 'package:basics/Presentation/ForgotPassword_Page/reset_password_page.dart';
 import 'package:basics/Presentation/Home_Page/homepage.dart';
 import 'package:basics/Presentation/Login_Register/login_page.dart';
 import 'package:basics/Presentation/Posts_Page/post_page.dart';
@@ -17,8 +19,8 @@ final GoRouter routerConfig = GoRouter(
     GoRoute(
       path: '/',
       name: 'enter',
-      builder: (BuildContext context, GoRouterState state) {
-        return const EnterPage();
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        return const NoTransitionPage(child: EnterPage());
       },
     ),
     GoRoute(
@@ -31,6 +33,12 @@ final GoRouter routerConfig = GoRouter(
         name: 'calendar',
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: CalendarPage())),
+
+    GoRoute(
+        path: '/login/forgot',
+        name: 'forgot',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: ForgotPage())),
 
     GoRoute(
         path: '/home/profile',
@@ -66,7 +74,11 @@ final GoRouter routerConfig = GoRouter(
         name: 'userslist',
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: UserListPage())),
-
+    GoRoute(
+        path: '/login/Reset-Password',
+        name: 'reset',
+        pageBuilder: (context, state) =>
+            NoTransitionPage(child: ResetPage(email: state.extra as String))),
     //   return const LoginPage();
   ],
 );

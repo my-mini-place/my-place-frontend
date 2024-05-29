@@ -1,9 +1,12 @@
 import 'package:basics/DI.dart';
 
 import 'package:basics/Domain/auth_entities/auth_exception.dart';
+import 'package:basics/Domain/auth_entities/register.dart';
+import 'package:basics/Domain/auth_entities/reset_password.dart';
 import 'package:basics/Domain/auth_entities/token.dart';
 
 import 'package:basics/Infrastructure/dio_client.dart';
+import 'package:basics/Infrastructure/urls.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -17,14 +20,13 @@ class AuthService implements AuthInterface {
   final dioClient = getIt.get<DioClient>();
 
   @override
-  Future<Either<AuthException, Token>> register(
-      String email, String pass, String confirmPass) async {
+  Future<Either<AuthException, String>> register(Register register) async {
     try {
-      final result = await dioClient.dio.post<Map<String, dynamic>>(
-          "twpkastaara",
-          data: {'email': email, 'pass': pass, 'confirmPass': confirmPass});
-      if (result.data != null) {
-        return Right(Token.fromJson(result.data!));
+      final result = await dioClient.dio
+          .post<String>(registerUrl, data: register.toJson());
+
+      if (result.statusCode == 200) {
+        return const Right("IsGood");
       } else {
         return const Left(AuthException.wrongEmailOrPass());
       }
@@ -36,12 +38,11 @@ class AuthService implements AuthInterface {
   @override
   Future<Either<AuthException, Token>> login(String email, String pass) async {
     try {
-      final result = await dioClient.dio.post<Map<String, dynamic>>(
-          "https://localhost:51076/api/Security/login",
-          data: {
-            'email': "Admin123@gmail.com",
-            'password': "Admin123",
-          });
+      final result =
+          await dioClient.dio.post<Map<String, dynamic>>(loginUrl, data: {
+        'email': email,
+        'password': pass,
+      });
       if (result.data != null) {
         return Right(Token.fromJson(result.data!));
       } else {
@@ -54,13 +55,37 @@ class AuthService implements AuthInterface {
 
   @override
   Future<Either<AuthException, Unit>> logout(String idToken) {
-    throw UnimplementedError();
+    throw const Right("OK");
   }
 
   @override
   Future<Either<AuthException, Token>> refreshToken(String refreshToken) {
     // TODO: implement refreshToken
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<AuthException, void>> forgotPassword(String email) async {
+    try {
+      var result = await dioClient.dio.post(forgotUrl, data: {"Email": email});
+
+      return const Right("VOID");
+    } on DioException {
+      return const Left(AuthException.serverError());
+    }
+  }
+
+  @override
+  Future<Either<AuthException, void>> resetPassword(
+      ResetPassword resetPass) async {
+    try {
+      // bez freezed
+      var result = await dioClient.dio.post(resetUrl, data: resetPass.toJson());
+
+      return const Right("Void fix that later");
+    } on DioException {
+      return const Left(AuthException.serverError());
+    }
   }
 }
 

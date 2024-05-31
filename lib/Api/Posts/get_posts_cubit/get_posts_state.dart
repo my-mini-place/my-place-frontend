@@ -6,6 +6,14 @@ class InitialGetPosts extends GetPostsState {}
 
 class LoadingGetPosts extends GetPostsState {}
 
-class ErrorGetPosts extends GetPostsState {}
+class ErrorGetPosts extends GetPostsState {
+  String errorMessage;
 
-class LoadedGetPosts extends GetPostsState {}
+  ErrorGetPosts(this.errorMessage);
+}
+
+class LoadedGetPosts extends GetPostsState {
+  PagedList<Post> posts;
+
+  LoadedGetPosts(this.posts);
+}

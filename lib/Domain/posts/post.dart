@@ -22,18 +22,18 @@ class Post {
     this.optionsWithNumVotes,
   });
 
-  factory Post.fromJson(Map<String, dynamic> json) {
+  factory Post.fromJson(dynamic json) {
     return Post(
-      id: json['Id'] as String,
-      title: json['Title'] as String,
-      content: json['Content'] as String,
-      isSurvey: json['IsSurvey'] as bool,
-      surveyClosureDateTime: json['SurveyClosureDateTime'] != null
-          ? DateTime.parse(json['SurveyClosurePublicDateTime'] as String)
+      id: json['id'] as String,
+      title: json['title'] as String,
+      content: json['content'] as String,
+      isSurvey: json['isSurvey'] as bool,
+      surveyClosureDateTime: json['surveyClosureDateTime'] != null
+          ? DateTime.parse(json['surveyClosureDateTime'] as String)
           : null,
-      creationDateTime: DateTime.parse(json['CreationDateTime'] as String),
-      surveyClosed: json['SurveyClosed'] as bool,
-      optionsWithNumVotes: (json['OptionsWithNumVotes'] as List<dynamic>?)
+      creationDateTime: DateTime.parse(json['creationDateTime'] as String),
+      surveyClosed: json['surveyClosed'] as bool,
+      optionsWithNumVotes: (json['optionsWithNumVotes'] as List<dynamic>?)
           ?.map((e) => Option.fromJson(e as Map<String, dynamic>))
           .toList(),
     );

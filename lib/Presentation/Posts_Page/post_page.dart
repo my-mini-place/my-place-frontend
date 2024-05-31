@@ -1,9 +1,13 @@
+import 'package:basics/Api/Account_Managment/Users_cubit/users_cubit.dart';
+import 'package:basics/Api/Posts/get_posts_cubit/get_posts_cubit.dart';
+import 'package:basics/Domain/posts/post.dart';
 import 'package:basics/Presentation/Posts_Page/post_add_dialog.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Utils/extension.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostPage extends StatefulWidget {
   const PostPage({super.key});
@@ -17,142 +21,179 @@ class _PostPageState extends State<PostPage> {
   bool isCheck = true;
 
   @override
+  void initState() {
+    context.read<GetPostsCubit>().getAllPosts(page, pageSize);
+    scrollController.addListener(isEnd);
+    super.initState();
+  }
+
+  List<Post> posts = [];
+  int page = 1;
+  int pageSize = 3;
+
+  bool isLoading = false;
+  bool isNext = false;
+
+  ScrollController scrollController = ScrollController();
+  void isEnd() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      context.read<GetPostsCubit>().getAllPosts(page, pageSize);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppPageBasics(children: [
-      FractionallySizedBox(
-        widthFactor: 0.40,
-        child: Column(
-          children: [
-            gapH10,
-            if (context.isAdmin)
-              Container(
-                margin: const EdgeInsets.all(10),
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromARGB(255, 194, 194, 194),
-                          blurRadius: 3,
-                          blurStyle: BlurStyle.inner,
-                          spreadRadius: 1)
-                    ]),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Align(
-                          alignment: Alignment.topLeft,
-                          child: CircleAvatar(
-                              minRadius: 20,
-                              backgroundImage: AssetImage('assets/icon.jpg'))),
-                    ),
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: TextField(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  const AddPostDialog());
-                        },
-                        decoration: const InputDecoration(
-                            hintText: "O czym myślisz adminie? Dodaj posta!",
-                            filled: true,
-                            fillColor: Color.fromARGB(255, 241, 239, 239),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 0,
-                                  style: BorderStyle.none,
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)))),
-                      ),
-                    )),
-                  ],
-                ),
-              ),
+      BlocBuilder<GetPostsCubit, GetPostsState>(
+        builder: (context, state) {
+          if (state is LoadedGetPosts) {
+            // posts = state.posts.items;
+            isNext = state.posts.hasNextPage;
+            isLoading = false;
+            posts.addAll(state.posts.items);
+            page++;
+          }
+          if (state is LoadingGetPosts) {
+            isLoading = true;
+          }
 
-            // jesli ktos jest adminem
-            gapH10,
-            ...List.generate(
-              10,
-              (index) => Container(
-                margin: const EdgeInsets.all(10),
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromARGB(255, 194, 194, 194),
-                          blurRadius: 3,
-                          blurStyle: BlurStyle.inner,
-                          spreadRadius: 1)
-                    ]),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.topLeft,
-                                child: CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage('assets/icon.jpg'))),
+          return FractionallySizedBox(
+            widthFactor: 0.40,
+            child: Column(
+              children: [
+                gapH10,
+                if (context.isAdmin)
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color.fromARGB(255, 194, 194, 194),
+                              blurRadius: 3,
+                              blurStyle: BlurStyle.inner,
+                              spreadRadius: 1)
+                        ]),
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Align(
+                              alignment: Alignment.topLeft,
+                              child: CircleAvatar(
+                                  minRadius: 20,
+                                  backgroundImage:
+                                      AssetImage('assets/icon.jpg'))),
+                        ),
+                        Expanded(
+                            child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: TextField(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      const AddPostDialog());
+                            },
+                            decoration: const InputDecoration(
+                                hintText:
+                                    "O czym myślisz adminie? Dodaj posta!",
+                                filled: true,
+                                fillColor: Color.fromARGB(255, 241, 239, 239),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)))),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Administrator"),
-                              Text("24.01.2024"),
-                            ],
-                          )
-                        ],
-                      ),
-                      gapH10,
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                            "ROLE oin Trilogy! Top talents in AI application development are needed. Required skills include Python, SQL, Software Development, Java, JavaScript, C++, Linux, MySQL, and C#. For more details, please visit the job page. "),
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: isCheck,
-                              onChanged: (loool) {
-                                setState(() {
-                                  isCheck = !isCheck;
-                                });
-                              }),
-                          const Text("option 1"),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              value: isCheck,
-                              onChanged: (loool) {
-                                setState(() {
-                                  isCheck = !isCheck;
-                                });
-                              }),
-                          const Text("option 2"),
-                        ],
-                      ),
-                    ],
+                        )),
+                      ],
+                    ),
                   ),
+
+                // jesli ktos jest adminem
+                gapH10,
+
+                ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: posts.length,
+                    itemBuilder: ((context, index) =>
+                        PostWidget(post: posts[index]))),
+
+                isNext
+                    ? ElevatedButton(
+                        onPressed: () {
+                          context
+                              .read<GetPostsCubit>()
+                              .getAllPosts(page, pageSize);
+                        },
+                        child: const Text("Load More"))
+                    : const Text("Nie ma więcej postów :(")
+              ],
+            ),
+          );
+        },
+      ),
+    ]);
+  }
+}
+
+class PostWidget extends StatelessWidget {
+  const PostWidget({super.key, required this.post});
+
+  final Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+                color: Color.fromARGB(255, 194, 194, 194),
+                blurRadius: 3,
+                blurStyle: BlurStyle.inner,
+                spreadRadius: 1)
+          ]),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Align(
+                      alignment: Alignment.topLeft,
+                      child: CircleAvatar(
+                          backgroundImage: AssetImage('assets/icon.jpg'))),
                 ),
-              ),
-            )
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Administrator"),
+                    Text("24.01.2024"),
+                  ],
+                )
+              ],
+            ),
+            gapH10,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(post.content),
+            ),
           ],
         ),
       ),
-    ]);
+    );
   }
 }
 
@@ -274,3 +315,9 @@ class _PostPageState extends State<PostPage> {
 //     );
 //   }
 // }
+
+
+
+
+
+

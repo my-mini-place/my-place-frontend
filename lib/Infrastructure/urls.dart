@@ -8,7 +8,10 @@ const String resetUrl = "https://localhost:7281/api/Security/resetPassword";
 
 const String userInfoUrl =
     "https://localhost:7281/api/AccountManagement/getUserInfo/";
-// const String loginUrl = "https://localhost:5001/api/Security/login";
+
+const String getPostsUrl = "https://localhost:7281/Posts/";
+
+// const String loginUrl = "https ://localhost:5001/api/Security/login";
 
 // const String registerUrl = "https://localhost:5001/api/Security/register";
 

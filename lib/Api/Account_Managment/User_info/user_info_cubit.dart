@@ -2,7 +2,7 @@ import 'package:basics/Api/Auth/Auth_token_cubit/auth_cubit.dart';
 import 'package:basics/Domain/account_manager/userdetails.dart';
 import 'package:bloc/bloc.dart';
 
-import 'package:basics/Infrastructure/user_manager_service.dart';
+import 'package:basics/Infrastructure/user_manager_repo.dart';
 import 'package:flutter/material.dart';
 
 import 'package:injectable/injectable.dart';

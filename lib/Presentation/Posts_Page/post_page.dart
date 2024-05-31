@@ -1,5 +1,6 @@
 import 'package:basics/Presentation/Posts_Page/post_add_dialog.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
+import 'package:basics/Presentation/Utils/extension.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
 
 import 'package:flutter/material.dart';
@@ -23,54 +24,55 @@ class _PostPageState extends State<PostPage> {
         child: Column(
           children: [
             gapH10,
-            Container(
-              margin: const EdgeInsets.all(10),
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color.fromARGB(255, 194, 194, 194),
-                        blurRadius: 3,
-                        blurStyle: BlurStyle.inner,
-                        spreadRadius: 1)
-                  ]),
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Align(
-                        alignment: Alignment.topLeft,
-                        child: CircleAvatar(
-                            minRadius: 20,
-                            backgroundImage: AssetImage('assets/icon.jpg'))),
-                  ),
-                  Expanded(
-                      child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: TextField(
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                const AddPostDialog());
-                      },
-                      decoration: const InputDecoration(
-                          hintText: "O czym myślisz adminie? Dodaj posta!",
-                          filled: true,
-                          fillColor: Color.fromARGB(255, 241, 239, 239),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 0,
-                                style: BorderStyle.none,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)))),
+            if (context.isAdmin)
+              Container(
+                margin: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Color.fromARGB(255, 194, 194, 194),
+                          blurRadius: 3,
+                          blurStyle: BlurStyle.inner,
+                          spreadRadius: 1)
+                    ]),
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Align(
+                          alignment: Alignment.topLeft,
+                          child: CircleAvatar(
+                              minRadius: 20,
+                              backgroundImage: AssetImage('assets/icon.jpg'))),
                     ),
-                  )),
-                ],
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: TextField(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  const AddPostDialog());
+                        },
+                        decoration: const InputDecoration(
+                            hintText: "O czym myślisz adminie? Dodaj posta!",
+                            filled: true,
+                            fillColor: Color.fromARGB(255, 241, 239, 239),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 0,
+                                  style: BorderStyle.none,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)))),
+                      ),
+                    )),
+                  ],
+                ),
               ),
-            ),
 
             // jesli ktos jest adminem
             gapH10,

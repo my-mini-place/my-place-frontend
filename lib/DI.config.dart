@@ -19,7 +19,7 @@ import 'Api/Auth/Login_cubit/login_cubit.dart' as _i10;
 import 'Domain/Interfaces/auth_interface.dart' as _i6;
 import 'Infrastructure/auth_service.dart' as _i7;
 import 'Infrastructure/dio_client.dart' as _i3;
-import 'Infrastructure/user_manager_service.dart' as _i4;
+import 'Infrastructure/user_manager_repo.dart' as _i4;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt

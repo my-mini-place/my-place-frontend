@@ -15,9 +15,11 @@ class UserManagerRepo {
 
   Future<Either<String, List<User>>> getAllUsers() async {
     try {
-      final response = await dioClient.dio.get('https://example.com/api/users');
-      List<User> users =
-          (response.data as List).map((data) => User.fromJson(data)).toList();
+      // idk czy on automatycznie bedzie probowla zamieniac json na list<User>
+      final response =
+          await dioClient.dio.get<List<User>>('https://example.com/api/users');
+      List<User> users = response.data!;
+
       return Right(users);
     } on DioException catch (e) {
       return Left(e.message!);

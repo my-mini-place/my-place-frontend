@@ -1,6 +1,6 @@
 import 'package:basics/Domain/account_manager/User.dart';
 import 'package:basics/Domain/account_manager/userdetails.dart';
-import 'package:basics/Infrastructure/user_manager_service.dart';
+import 'package:basics/Infrastructure/user_manager_repo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 part 'users_state.dart';

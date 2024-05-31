@@ -11,7 +11,7 @@ class UserFullInfo {
   final Duration? endWorkTime;
   final String? blockName;
   final String role;
-  final String status;
+  final int status;
 
   UserFullInfo({
     required this.id,
@@ -49,3 +49,17 @@ class UserFullInfo {
     );
   }
 }
+
+UserFullInfo userBasics = UserFullInfo(
+  id: '',
+  email: '',
+  name: '',
+  surname: '',
+  phoneNumber: '',
+  residence: null,
+  startWorkTime: null,
+  endWorkTime: null,
+  blockName: null,
+  role: '',
+  status: 0,
+);

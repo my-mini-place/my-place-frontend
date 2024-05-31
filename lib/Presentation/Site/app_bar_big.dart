@@ -1,5 +1,5 @@
-import 'package:basics/Api/Auth_token_cubit/auth_cubit.dart';
-import 'package:basics/Api/Login_cubit/login_cubit.dart';
+import 'package:basics/Api/Auth/Auth_token_cubit/auth_cubit.dart';
+import 'package:basics/Api/Auth/Login_cubit/login_cubit.dart';
 import 'package:basics/Presentation/Enter_Page/components/logo_widget.dart';
 import 'package:basics/Presentation/Site/app_bar_button.dart';
 
@@ -88,15 +88,26 @@ class MyAppBarBig extends StatelessWidget {
                         text: "Login",
                         navigation: () => {context.go('/login')},
                       )),
-                const Padding(
-                  padding: EdgeInsets.only(right: 40),
-                  child: Center(
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage('assets/icon.jpg'),
+                if (state is AuthorizationState)
+                  const Padding(
+                    padding: EdgeInsets.only(right: 40),
+                    child: Center(
+                      child: CircleAvatar(
+                        radius: 25,
+                        backgroundImage: AssetImage('assets/icon.jpg'),
+                      ),
                     ),
                   ),
-                ),
+                if (state is AuthorizationInitial)
+                  const Padding(
+                    padding: EdgeInsets.only(right: 40),
+                    child: Center(
+                      child: CircleAvatar(
+                        radius: 23,
+                        child: Icon(Icons.person),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ],

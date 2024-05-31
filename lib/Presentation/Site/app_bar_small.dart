@@ -1,4 +1,4 @@
-import 'package:basics/Api/Auth_token_cubit/auth_cubit.dart';
+import 'package:basics/Api/Auth/Auth_token_cubit/auth_cubit.dart';
 import 'package:basics/Domain/value_objects/colors.dart';
 import 'package:basics/Presentation/Enter_Page/components/logo_widget.dart';
 import 'package:basics/Presentation/Site/app_bar_button.dart';

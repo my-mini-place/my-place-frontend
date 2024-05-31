@@ -1,4 +1,4 @@
-import 'package:basics/Api/Auth_token_cubit/auth_cubit.dart';
+import 'package:basics/Api/Auth/Auth_token_cubit/auth_cubit.dart';
 import 'package:basics/Domain/Interfaces/auth_interface.dart';
 
 import 'package:basics/Domain/auth_entities/login.dart';
@@ -41,6 +41,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> logout() async {
     //  await _authservice.logout("aa");
+
     _authcubit.logout();
     emit(LoginInitial());
   }

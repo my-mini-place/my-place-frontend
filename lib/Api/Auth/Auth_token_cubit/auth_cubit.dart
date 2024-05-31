@@ -22,8 +22,8 @@ class AuthCubit extends Cubit<AuthState> with HydratedMixin<AuthState> {
     String type = json['type'];
     switch (type) {
       case 'AuthorizationState':
-        return AuthorizationState(
-            Token(accessToken: json['token']), json['role'], json['id']);
+        return AuthorizationState(Token(accessToken: json['token']),
+            stringToRole(json['role']), json['id']);
       case 'AuthorizationInitial':
         return AuthorizationInitial();
       default:

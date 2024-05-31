@@ -1,3 +1,4 @@
+import 'package:basics/Api/Auth/Auth_token_cubit/auth_cubit.dart';
 import 'package:basics/Domain/account_manager/userdetails.dart';
 import 'package:bloc/bloc.dart';
 
@@ -11,14 +12,22 @@ part 'user_info_state.dart';
 class UserInfoCubit extends Cubit<UserState> {
   final UserManagerRepo userManagerRepo;
 
-  UserInfoCubit(this.userManagerRepo) : super(UserInitialState());
+  final AuthCubit authCubit;
+  UserInfoCubit(this.userManagerRepo, this.authCubit)
+      : super(UserInitialState());
 
   Future<void> getUserInfo(String userId) async {
     emit(UserInfoLoading());
-    final result = await userManagerRepo.getUserInfo(userId);
-    result.fold(
-      (error) => emit(UserInfoError(error)),
-      (userInfo) => emit(UserInfoLoaded(userInfo)),
-    );
+    final authState = authCubit.state;
+    if (authState is AuthorizationState) {
+      final result = await userManagerRepo.getUserInfo(
+          userId, authState.token.accessToken);
+      result.fold(
+        (error) => emit(UserInfoError(error)),
+        (userInfo) => emit(UserInfoLoaded(userInfo)),
+      );
+    } else {
+      emit(UserInfoError('Invalid token not authorized'));
+    }
   }
 }

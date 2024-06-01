@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'My-Place',
         theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: myOrange),
+            //colorScheme: ColorScheme.fromSeed(seedColor: myOrange),
             useMaterial3: true,
             fontFamily: GoogleFonts.montserrat().fontFamily),
       ),

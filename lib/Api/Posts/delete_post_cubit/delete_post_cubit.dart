@@ -10,5 +10,15 @@ class DeletePostCubit extends Cubit<DeletePostState> {
 
   DeletePostCubit({
     required this.postsRepo,
-  }) : super(InitialDeletePost());
+  }) : super(DeletePostInitial());
+
+  Future<void> deletePost(String postId) async {
+    emit(DeletePostLoading());
+
+    final result = await postsRepo.deletePost(postId);
+    result.fold(
+      (error) => emit(DeletePostError(error)),
+      (posts) => emit(DeletePostSucces()),
+    );
+  }
 }

@@ -15,9 +15,9 @@ class Option {
 
   Map<String, dynamic> toJson() {
     return {
-      'Id': id,
-      'Text': text,
-      'NumVotes': numVotes,
+      'id': id,
+      'text': text,
+      'numVotes': numVotes,
     };
   }
 }

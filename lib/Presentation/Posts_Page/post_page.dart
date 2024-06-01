@@ -1,13 +1,16 @@
 import 'package:basics/Api/Account_Managment/Users_cubit/users_cubit.dart';
+import 'package:basics/Api/Posts/create_post_cubit/create_post_cubit.dart';
 import 'package:basics/Api/Posts/get_posts_cubit/get_posts_cubit.dart';
 import 'package:basics/Domain/posts/post.dart';
 import 'package:basics/Presentation/Posts_Page/post_add_dialog.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Utils/extension.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
 
 class PostPage extends StatefulWidget {
   const PostPage({super.key});
@@ -29,7 +32,7 @@ class _PostPageState extends State<PostPage> {
 
   List<Post> posts = [];
   int page = 1;
-  int pageSize = 3;
+  int pageSize = 5;
 
   bool isLoading = false;
   bool isNext = false;
@@ -42,10 +45,24 @@ class _PostPageState extends State<PostPage> {
     }
   }
 
+  void reset() {
+    posts = [];
+    page = 1;
+    pageSize = 5;
+    isLoading = false;
+    isNext = false;
+    context.read<GetPostsCubit>().getAllPosts(page, pageSize);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppPageBasics(children: [
-      BlocBuilder<GetPostsCubit, GetPostsState>(
+      BlocListener<CreatePostCubit, CreatePostState>(
+          listener: (context, state) {
+        if (state is CreatePostSucces) {
+          reset();
+        }
+      }, child: BlocBuilder<GetPostsCubit, GetPostsState>(
         builder: (context, state) {
           if (state is LoadedGetPosts) {
             // posts = state.posts.items;
@@ -95,7 +112,9 @@ class _PostPageState extends State<PostPage> {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      const AddPostDialog());
+                                      AddPostDialog(
+                                        resetFunction: (context) {},
+                                      ));
                             },
                             decoration: const InputDecoration(
                                 hintText:
@@ -138,10 +157,12 @@ class _PostPageState extends State<PostPage> {
             ),
           );
         },
-      ),
+      ))
     ]);
   }
 }
+
+enum Menu { preview, share, getLink, remove, download }
 
 class PostWidget extends StatelessWidget {
   const PostWidget({super.key, required this.post});
@@ -167,23 +188,79 @@ class PostWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
-              children: [
-                Padding(
+            Container(
+              color: Colors.amber,
+              child: Row(children: [
+                const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Align(
                       alignment: Alignment.topLeft,
                       child: CircleAvatar(
                           backgroundImage: AssetImage('assets/icon.jpg'))),
                 ),
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Administrator"),
                     Text("24.01.2024"),
                   ],
+                ),
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                        popupMenuTheme:
+                            const PopupMenuThemeData(color: Colors.white)),
+                    child: PopupMenuButton<Menu>(
+                      icon: const Icon(Icons.more_vert),
+                      onSelected: (Menu item) {
+                        if (item == Menu.remove) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Usuwanie posta'), //
+                              content: const Text(
+                                  'Na pewno chcesz usunąc post?'), // Message which will be pop up on the screen
+                              // Action widget which will provide the user to acknowledge the choice
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  }, // function used to perform after pressing the button
+                                  child: const Text('NIE'),
+                                ),
+                                TextButton(
+                                  onPressed: () {},
+                                  child: const Text('TAK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuEntry<Menu>>[
+                        const PopupMenuItem<Menu>(
+                          value: Menu.preview,
+                          child: ListTile(
+                            leading: Icon(Icons.edit),
+                            title: Text('Edit'),
+                          ),
+                        ),
+                        const PopupMenuDivider(),
+                        const PopupMenuItem<Menu>(
+                          value: Menu.remove,
+                          child: ListTile(
+                            leading: Icon(Icons.delete_outline),
+                            title: Text('Remove'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 )
-              ],
+              ]),
             ),
             gapH10,
             Padding(

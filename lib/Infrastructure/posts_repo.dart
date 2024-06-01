@@ -38,9 +38,11 @@ class PostsRepo {
 
   Future<Either<String, String>> createPost(PostCreate postCreate) async {
     try {
-      final response = await dioClient.dio.get('https://example.com/api/users');
+      Map<String, dynamic> datajson = postCreate.toJson();
 
-      if (response.statusCode != 200 || response.statusCode != 201) {
+      final response = await dioClient.dio.post(createPostsUrl, data: datajson);
+
+      if (response.statusCode != 200) {
         return Left(response.statusMessage!);
       }
 

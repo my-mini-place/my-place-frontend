@@ -21,7 +21,7 @@ import 'Api/Posts/delete_post_cubit/delete_post_cubit.dart' as _i10;
 import 'Api/Posts/get_posts_cubit/get_posts_cubit.dart' as _i11;
 import 'Api/Posts/vote_post_cubit/vote_post_cubit.dart' as _i12;
 import 'Domain/Interfaces/auth_interface.dart' as _i6;
-import 'Infrastructure/auth_service.dart' as _i7;
+import 'Infrastructure/auth_repo.dart' as _i7;
 import 'Infrastructure/dio_client.dart' as _i3;
 import 'Infrastructure/posts_repo.dart' as _i4;
 import 'Infrastructure/user_manager_repo.dart' as _i5;

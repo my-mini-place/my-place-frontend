@@ -8,7 +8,7 @@ import 'package:basics/Presentation/ForgotPassword_Page/forgot_password_page.dar
 import 'package:basics/Presentation/ForgotPassword_Page/reset_password_page.dart';
 import 'package:basics/Presentation/Home_Page/homepage.dart';
 import 'package:basics/Presentation/Login_Register/login_page.dart';
-import 'package:basics/Presentation/Posts_Page/post_page.dart';
+import 'package:basics/Presentation/Posts_Page/posts_page.dart';
 import 'package:basics/Presentation/Profile_Page/profile_page.dart';
 import 'package:basics/Presentation/Utils/extension.dart';
 import 'package:flutter/widgets.dart';

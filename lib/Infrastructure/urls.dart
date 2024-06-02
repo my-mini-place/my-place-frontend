@@ -13,6 +13,7 @@ const String getPostsUrl = "https://localhost:7281/Posts/";
 
 const String createPostsUrl = "https://localhost:7281/Posts/create";
 
+const String deletePostUrl = "https://localhost:7281/Posts";
 // const String loginUrl = "https ://localhost:5001/api/Security/login";
 
 // const String registerUrl = "https://localhost:5001/api/Security/register";

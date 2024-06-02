@@ -1,10 +1,15 @@
+import 'dart:async';
+
+import 'package:basics/Api/Auth/Auth_token_cubit/auth_cubit.dart';
 import 'package:basics/DI.dart';
 import 'package:basics/Domain/account_manager/User.dart';
 import 'package:basics/Domain/account_manager/userdetails.dart';
+import 'package:basics/Domain/auth_entities/auth_exception.dart';
 import 'package:basics/Domain/posts/post.dart';
 import 'package:basics/Domain/posts/postcreate.dart';
+import 'package:basics/Infrastructure/basic_repo.dart';
 import 'package:basics/Infrastructure/dio_client.dart';
-import 'package:basics/Infrastructure/paged_list.dart';
+import 'package:basics/Domain/paged_list.dart';
 import 'package:basics/Infrastructure/urls.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -12,10 +17,10 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
-class PostsRepo {
+class PostsRepo extends BasicRepo {
   final dioClient = getIt.get<DioClient>();
 
-  PostsRepo();
+  PostsRepo() : super();
 
   Future<Either<String, PagedList<Post>>> getAllPosts(
       int page, int pageSize) async {
@@ -54,14 +59,18 @@ class PostsRepo {
 
   Future<Either<String, String>> deletePost(String postId) async {
     try {
-      final response =
-          await dioClient.dio.get<List<Post>>('https://example.com/api/users');
+      if (!isAuthenticated) {
+        return const Left("Not Authenticated");
+      }
 
-      if (response.statusCode != 200 || response.statusCode != 201) {
+      final response = await dioClient.dio.delete("$deletePostUrl/$postId",
+          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+
+      if (response.statusCode != 200) {
         return Left(response.statusMessage!);
       }
 
-      return const Right("UDALO SIE ");
+      return const Right("OK");
     } on DioException catch (e) {
       return Left(e.message!);
     }

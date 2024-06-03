@@ -7,6 +7,7 @@ import 'package:basics/Domain/account_manager/userdetails.dart';
 import 'package:basics/Domain/auth_entities/auth_exception.dart';
 import 'package:basics/Domain/posts/post.dart';
 import 'package:basics/Domain/posts/postcreate.dart';
+import 'package:basics/Domain/posts/postedit.dart';
 import 'package:basics/Infrastructure/basic_repo.dart';
 import 'package:basics/Infrastructure/dio_client.dart';
 import 'package:basics/Domain/paged_list.dart';
@@ -46,6 +47,22 @@ class PostsRepo extends BasicRepo {
       Map<String, dynamic> datajson = postCreate.toJson();
 
       final response = await dioClient.dio.post(createPostsUrl, data: datajson);
+
+      if (response.statusCode != 200) {
+        return Left(response.statusMessage!);
+      }
+
+      return const Right("OK");
+    } on DioException catch (e) {
+      return Left(e.message!);
+    }
+  }
+
+  Future<Either<String, String>> editPost(PostEdit editPost) async {
+    try {
+      Map<String, dynamic> datajson = editPost.toJson();
+
+      final response = await dioClient.dio.patch(editPostsUrl, data: datajson);
 
       if (response.statusCode != 200) {
         return Left(response.statusMessage!);

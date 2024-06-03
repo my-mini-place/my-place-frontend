@@ -1,6 +1,7 @@
 import 'package:basics/Api/Account_Managment/Users_cubit/users_cubit.dart';
 import 'package:basics/Api/Posts/create_post_cubit/create_post_cubit.dart';
 import 'package:basics/Api/Posts/delete_post_cubit/delete_post_cubit.dart';
+import 'package:basics/Api/Posts/edit_post_cubit/edit_post_cubit.dart';
 import 'package:basics/Api/Posts/get_posts_cubit/get_posts_cubit.dart';
 import 'package:basics/Domain/posts/post.dart';
 import 'package:basics/Domain/value_objects/notification.dart';
@@ -65,6 +66,20 @@ class _PostPageState extends State<PostPage> {
     return AppPageBasics(children: [
       MultiBlocListener(
           listeners: [
+            BlocListener<EditPostCubit, EditPostState>(
+                listener: (context, state) async {
+              if (state is EditPostSucces) {
+                NotificationManager.showSuccess(
+                    context, 'Edit post', 'Your post has been edited!');
+
+                reset();
+              }
+
+              if (state is Error) {
+                NotificationManager.showError(
+                    context, 'Edit post', 'EDIT POST ERROR!!! ! ! ');
+              }
+            }),
             BlocListener<CreatePostCubit, CreatePostState>(
                 listener: (context, state) async {
               if (state is CreatePostSucces) {
@@ -99,6 +114,11 @@ class _PostPageState extends State<PostPage> {
               }
               if (state is LoadingGetPosts) {
                 isLoading = true;
+              }
+
+              if (state is ErrorGetPosts) {
+                NotificationManager.showError(
+                    context, "Get Posts", "Error w czasie wczytywania postów");
               }
 
               return FractionallySizedBox(

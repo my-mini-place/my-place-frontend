@@ -1,5 +1,6 @@
 import 'package:basics/Api/Posts/delete_post_cubit/delete_post_cubit.dart';
 import 'package:basics/Domain/posts/post.dart';
+import 'package:basics/Presentation/Posts_Page/post_edit_dialog.dart';
 import 'package:basics/Presentation/Utils/extension.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +86,12 @@ class PostWidget extends StatelessWidget {
                             ),
                           );
                         }
+
+                        if (item == Menu.preview) {
+                          showDialog(
+                              context: context,
+                              builder: (context) => EditPostDialog(post: post));
+                        }
                       },
                       itemBuilder: (BuildContext context) =>
                           <PopupMenuEntry<Menu>>[
@@ -109,6 +116,12 @@ class PostWidget extends StatelessWidget {
                 )
             ]),
             gapH10,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(post.title,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(post.content),

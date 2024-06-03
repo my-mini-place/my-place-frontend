@@ -5,6 +5,7 @@ import 'package:basics/Api/Auth/Forgot_password_cubit/forgot_cubit.dart';
 import 'package:basics/Api/Auth/Login_cubit/login_cubit.dart';
 import 'package:basics/Api/Posts/create_post_cubit/create_post_cubit.dart';
 import 'package:basics/Api/Posts/delete_post_cubit/delete_post_cubit.dart';
+import 'package:basics/Api/Posts/edit_post_cubit/edit_post_cubit.dart';
 import 'package:basics/Api/Posts/get_posts_cubit/get_posts_cubit.dart';
 import 'package:basics/Api/Posts/vote_post_cubit/vote_post_cubit.dart';
 import 'package:basics/DI.config.dart';
@@ -47,6 +48,7 @@ class DependencyInjection extends StatelessWidget {
         BlocProvider(create: (context) => getIt.get<CreatePostCubit>()),
         BlocProvider(create: (context) => getIt.get<DeletePostCubit>()),
         BlocProvider(create: (context) => getIt.get<VotePostCubit>()),
+        BlocProvider(create: (context) => getIt.get<EditPostCubit>()),
       ],
       child: inputWidget,
     );

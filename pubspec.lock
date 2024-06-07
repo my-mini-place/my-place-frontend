@@ -249,6 +249,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.3+1"
+  elegant_notification:
+    dependency: "direct main"
+    description:
+      name: elegant_notification
+      sha256: "138f9630fd3b1d8160cd29514b26da7a32cedb063b94d25efd25b0724becd881"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.2"
+  event_bus:
+    dependency: "direct main"
+    description:
+      name: event_bus
+      sha256: "44baa799834f4c803921873e7446a2add0f3efa45e101a054b1f0ab9b95f8edc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -505,7 +521,7 @@ packages:
     source: hosted
     version: "2.6.1"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
@@ -824,6 +840,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  shimmer:
+    dependency: "direct main"
+    description:
+      name: shimmer
+      sha256: "5f88c883a22e9f9f299e5ba0e4f7e6054857224976a5d9f839d4ebdc94a14ac9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   simple_gesture_detector:
     dependency: transitive
     description:
@@ -1085,6 +1109,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "13.0.0"
+  vph_common_widgets:
+    dependency: transitive
+    description:
+      name: vph_common_widgets
+      sha256: "5b4994af8f147e506408246b5d58a92baf368c4e05dff96f592b4d907205c6ca"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
+  vph_web_date_picker:
+    dependency: "direct main"
+    description:
+      name: vph_web_date_picker
+      sha256: "3c2a59159452d8644661393a65cab2fab28cc9436153bbc1175fc89f4ad05346"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.7"
   watcher:
     dependency: transitive
     description:

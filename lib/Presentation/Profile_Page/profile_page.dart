@@ -18,7 +18,9 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
-    context.read<UserInfoCubit>().getUserInfo(getUserId(context));
+    if (context.read<UserInfoCubit>().state is! UserInfoLoaded) {
+      context.read<UserInfoCubit>().getUserInfo(getUserId(context));
+    }
     super.initState();
   }
 

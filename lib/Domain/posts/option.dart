@@ -7,15 +7,14 @@ class Option {
 
   factory Option.fromJson(Map<String, dynamic> json) {
     return Option(
-      id: json['Id'] as String,
-      text: json['Text'] as String,
-      numVotes: json['NumVotes'] as int?,
+      id: json['id'] as String,
+      text: json['text'] as String,
+      numVotes: json['numVotes'] as int?,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'text': text,
       'numVotes': numVotes,
     };

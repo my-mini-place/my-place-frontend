@@ -1,11 +1,12 @@
 import 'package:basics/Domain/posts/option.dart';
+import 'package:basics/Domain/posts/option_create.dart';
 
 class PostCreate {
   String title;
   String content;
   bool isSurvey;
   DateTime? surveyClosureDateTime;
-  List<Option>? optionsWithNumVotes;
+  List<OptionCreate>? optionsWithNumVotes;
 
   PostCreate({
     required this.title,

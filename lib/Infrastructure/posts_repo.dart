@@ -1,20 +1,18 @@
 import 'dart:async';
 
-import 'package:basics/Api/Auth/Auth_token_cubit/auth_cubit.dart';
 import 'package:basics/DI.dart';
-import 'package:basics/Domain/account_manager/User.dart';
-import 'package:basics/Domain/account_manager/userdetails.dart';
-import 'package:basics/Domain/auth_entities/auth_exception.dart';
+
 import 'package:basics/Domain/posts/post.dart';
 import 'package:basics/Domain/posts/postcreate.dart';
 import 'package:basics/Domain/posts/postedit.dart';
+import 'package:basics/Domain/posts/vote.dart';
 import 'package:basics/Infrastructure/basic_repo.dart';
 import 'package:basics/Infrastructure/dio_client.dart';
 import 'package:basics/Domain/paged_list.dart';
 import 'package:basics/Infrastructure/urls.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
@@ -98,13 +96,16 @@ class PostsRepo extends BasicRepo {
     }
   }
 
-  Future<Either<String, String>> postVote() async {
+  Future<Either<String, String>> postVote(
+      String postId, String optionId) async {
+    Vote vote = Vote(optionId, userId, postId);
+
     try {
-      final response = await dioClient.dio.get<List<Post>>(
-          'https://example.com/api/users',
+      final response = await dioClient.dio.post(votePostUrl,
+          data: vote.toJson(),
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
 
-      if (response.statusCode != 200 || response.statusCode != 201) {
+      if (response.statusCode != 200) {
         return Left(response.statusMessage!);
       }
 

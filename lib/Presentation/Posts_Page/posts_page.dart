@@ -2,6 +2,7 @@ import 'package:basics/Api/Posts/create_post_cubit/create_post_cubit.dart';
 import 'package:basics/Api/Posts/delete_post_cubit/delete_post_cubit.dart';
 import 'package:basics/Api/Posts/edit_post_cubit/edit_post_cubit.dart';
 import 'package:basics/Api/Posts/get_posts_cubit/get_posts_cubit.dart';
+import 'package:basics/Api/Posts/vote_post_cubit/vote_post_cubit.dart';
 import 'package:basics/Domain/posts/post.dart';
 import 'package:basics/Domain/value_objects/notification.dart';
 import 'package:basics/Presentation/Posts_Page/post_add_dialog.dart';
@@ -82,6 +83,18 @@ class _PostPageState extends State<PostPage> {
                     context, 'Create post', 'Your post has been created!');
 
                 reset();
+              }
+            }),
+            BlocListener<VotePostCubit, VotePostsState>(
+                listener: (context, state) async {
+              if (state is VotePostsSuccess) {
+                NotificationManager.showSuccess(
+                    context, 'Glosowanie', 'Zaglosowałeś właśnie w ankiecie!');
+              }
+
+              if (state is ErrorVotePost) {
+                NotificationManager.showError(
+                    context, 'Glosowanie', 'Zaglosowałeś nie udało się!');
               }
             }),
             BlocListener<DeletePostCubit, DeletePostState>(

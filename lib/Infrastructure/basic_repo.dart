@@ -11,6 +11,7 @@ class BasicRepo {
 
   late String accessToken;
   late bool isAuthenticated = false;
+  late String userId;
 
   BasicRepo() {
     AuthState state = authCubit.state;
@@ -18,6 +19,7 @@ class BasicRepo {
     if (state is AuthorizationState) {
       isAuthenticated = true;
       accessToken = state.token.accessToken;
+      userId = state.userId;
     } else if (state is AuthorizationInitial) {
       accessToken = '';
       isAuthenticated = false;
@@ -27,8 +29,10 @@ class BasicRepo {
       if (state is AuthorizationState) {
         isAuthenticated = true;
         accessToken = state.token.accessToken;
+        userId = state.userId;
       } else if (state is AuthorizationInitial) {
         accessToken = '';
+
         isAuthenticated = false;
       }
     });

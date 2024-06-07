@@ -1,5 +1,6 @@
 import 'package:basics/Api/Posts/delete_post_cubit/delete_post_cubit.dart';
 import 'package:basics/Api/Posts/vote_post_cubit/vote_post_cubit.dart';
+import 'package:basics/Domain/logoutevent.dart';
 import 'package:basics/Domain/posts/post.dart';
 import 'package:basics/Presentation/Posts_Page/post_edit_dialog.dart';
 import 'package:basics/Presentation/Utils/extension.dart';
@@ -23,10 +24,33 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  late String chooseId = "";
-  late List<bool> optionsvalues = widget.post.isSurvey
-      ? widget.post.optionsWithNumVotes!.map((e) => false).toList()
-      : List.empty();
+  String chooseId = "";
+  late List<bool> optionsvalues;
+
+  String? uservote;
+
+  @override
+  void initState() {
+    optionsvalues = widget.post.isSurvey
+        ? widget.post.optionsWithNumVotes!.map((e) => false).toList()
+        : List.empty();
+
+    if (context.isResident) {
+      uservote =
+          widget.post.UserVote != "don't vote" ? widget.post.UserVote : null;
+
+      if (uservote != null) {
+        for (int i = 0; i < widget.post.optionsWithNumVotes!.length; i++) {
+          if (widget.post.optionsWithNumVotes![i].id == uservote) {
+            optionsvalues[i] = true;
+            break;
+          }
+        }
+      }
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -16,7 +16,7 @@ const String createPostsUrl = "https://localhost:7281/api/Posts/create";
 const String editPostsUrl = "https://localhost:7281/api/Posts/Update";
 
 const String deletePostUrl = "https://localhost:7281/api/Posts";
-const String votePostUrl = "https://localhost:7281/api/Vote";
+const String votePostUrl = "https://localhost:7281/api/Posts/Vote";
 
 // const String loginUrl = "https ://localhost:5001/api/Security/login";
 

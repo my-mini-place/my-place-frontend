@@ -13,10 +13,10 @@ class VotePostCubit extends Cubit<VotePostsState> {
     required this.postsRepo,
   }) : super(InitialVotePost());
 
-  Future<void> votePost(String PostId, String OptionId) async {
+  Future<void> votePost(String postId, String optionId) async {
     emit(VotePostsinProgres());
 
-    final result = await postsRepo.postVote();
+    final result = await postsRepo.postVote(postId, optionId);
     result.fold(
       (error) => emit(ErrorVotePost(error)),
       (posts) => emit(VotePostsSuccess()),

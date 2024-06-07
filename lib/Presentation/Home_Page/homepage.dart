@@ -1,11 +1,9 @@
-import 'package:basics/Api/Auth/Auth_token_cubit/auth_cubit.dart';
-import 'package:basics/Domain/auth_entities/user_roles.dart';
 import 'package:basics/Presentation/Home_Page/components/function_icon.dart';
 import 'package:basics/Presentation/Site/app_bar_changer.dart';
 import 'package:basics/Presentation/Site/footer.dart';
 import 'package:basics/Presentation/Utils/Gaps.dart';
 import 'package:basics/Presentation/Utils/extension.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
@@ -49,14 +47,14 @@ class HomePage extends StatelessWidget {
                   title: "Usterki",
                   icon: Icons.construction,
                   navigation: () {
-                    context.goNamed("/home/usterka");
+                    context.go("/home/usterka");
                   },
                 ),
                 FunctionIcon(
                   title: "Ogłoszenia",
                   icon: Icons.assignment_late_outlined,
                   navigation: () {
-                    context.goNamed("posts");
+                    context.replaceNamed("posts");
                   },
                 ),
                 if (context.isAdmin)
@@ -71,14 +69,14 @@ class HomePage extends StatelessWidget {
                   title: "Kalendarz",
                   icon: Icons.calendar_today,
                   navigation: () {
-                    context.goNamed("calendar");
+                    context.pushNamed("calendar");
                   },
                 ),
                 FunctionIcon(
                   title: "Dokumenty",
                   icon: Icons.edit_document,
                   navigation: () {
-                    context.goNamed("doc");
+                    context.replaceNamed("doc");
                   },
                 ),
               ],

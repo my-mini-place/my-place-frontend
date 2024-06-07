@@ -27,7 +27,8 @@ class PostsRepo extends BasicRepo {
       int page, int pageSize) async {
     try {
       final response = await dioClient.dio.get(getPostsUrl,
-          queryParameters: {'page': page, 'pageSize': pageSize});
+          queryParameters: {'page': page, 'pageSize': pageSize},
+          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
 
       final PagedList<Post> pagedList =
           PagedList.fromJson(response.data, Post.fromJson);
@@ -46,7 +47,9 @@ class PostsRepo extends BasicRepo {
     try {
       Map<String, dynamic> datajson = postCreate.toJson();
 
-      final response = await dioClient.dio.post(createPostsUrl, data: datajson);
+      final response = await dioClient.dio.post(createPostsUrl,
+          data: datajson,
+          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
 
       if (response.statusCode != 200) {
         return Left(response.statusMessage!);
@@ -62,7 +65,9 @@ class PostsRepo extends BasicRepo {
     try {
       Map<String, dynamic> datajson = editPost.toJson();
 
-      final response = await dioClient.dio.patch(editPostsUrl, data: datajson);
+      final response = await dioClient.dio.patch(editPostsUrl,
+          data: datajson,
+          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
 
       if (response.statusCode != 200) {
         return Left(response.statusMessage!);
@@ -95,8 +100,9 @@ class PostsRepo extends BasicRepo {
 
   Future<Either<String, String>> postVote() async {
     try {
-      final response =
-          await dioClient.dio.get<List<Post>>('https://example.com/api/users');
+      final response = await dioClient.dio.get<List<Post>>(
+          'https://example.com/api/users',
+          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
 
       if (response.statusCode != 200 || response.statusCode != 201) {
         return Left(response.statusMessage!);

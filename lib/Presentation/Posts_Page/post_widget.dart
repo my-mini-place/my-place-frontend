@@ -1,17 +1,32 @@
 import 'package:basics/Api/Posts/delete_post_cubit/delete_post_cubit.dart';
+import 'package:basics/Api/Posts/vote_post_cubit/vote_post_cubit.dart';
 import 'package:basics/Domain/posts/post.dart';
 import 'package:basics/Presentation/Posts_Page/post_edit_dialog.dart';
 import 'package:basics/Presentation/Utils/extension.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
+import 'package:dartz/dartz_unsafe.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 enum Menu { preview, share, getLink, remove, download }
 
-class PostWidget extends StatelessWidget {
+class PostWidget extends StatefulWidget {
   const PostWidget({super.key, required this.post});
 
   final Post post;
+
+  @override
+  State<PostWidget> createState() => _PostWidgetState();
+}
+
+class _PostWidgetState extends State<PostWidget> {
+  late String chooseId = "";
+  late List<bool> optionsvalues = widget.post.isSurvey
+      ? widget.post.optionsWithNumVotes!.map((e) => false).toList()
+      : List.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +55,12 @@ class PostWidget extends StatelessWidget {
                     child: CircleAvatar(
                         backgroundImage: AssetImage('assets/icon.jpg'))),
               ),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Administrator"),
-                  Text("24.01.2024"),
+                  const Text("Administrator"),
+                  Text(DateFormat('yyyy-MM-dd – kk:mm')
+                      .format(widget.post.creationDateTime)),
                 ],
               ),
               const Spacer(),
@@ -77,7 +93,7 @@ class PostWidget extends StatelessWidget {
                                   onPressed: () {
                                     context
                                         .read<DeletePostCubit>()
-                                        .deletePost(post.id);
+                                        .deletePost(widget.post.id);
                                     Navigator.of(context).pop();
                                   },
                                   child: const Text('TAK'),
@@ -90,7 +106,8 @@ class PostWidget extends StatelessWidget {
                         if (item == Menu.preview) {
                           showDialog(
                               context: context,
-                              builder: (context) => EditPostDialog(post: post));
+                              builder: (context) =>
+                                  EditPostDialog(post: widget.post));
                         }
                       },
                       itemBuilder: (BuildContext context) =>
@@ -118,14 +135,66 @@ class PostWidget extends StatelessWidget {
             gapH10,
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(post.title,
+              child: Text(widget.post.title,
                   style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold)),
+                      fontSize: 25, fontWeight: FontWeight.bold)),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(post.content),
+              child: Text(
+                widget.post.content,
+                style: const TextStyle(fontSize: 18),
+              ),
             ),
+            if (widget.post.isSurvey)
+              Column(
+                children: [
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: widget.post.optionsWithNumVotes!.length,
+                      itemBuilder: (context, index) => CheckboxListTile(
+                            enabled: context.isResident ? true : false,
+                            controlAffinity: ListTileControlAffinity.leading,
+                            contentPadding: const EdgeInsets.only(
+                                top: 20, left: 25, right: 20),
+                            title: Text(
+                                widget.post.optionsWithNumVotes![index].text),
+                            secondary: context.isAdmin
+                                ? Text(
+                                    " Votes: ${widget.post.optionsWithNumVotes![index].numVotes}")
+                                : null,
+                            value: optionsvalues[index],
+                            onChanged: (value) {
+                              setState(() {
+                                optionsvalues[index] = !optionsvalues[index];
+
+                                if (optionsvalues[index] == true) {
+                                  chooseId = widget
+                                      .post.optionsWithNumVotes![index].id;
+                                }
+
+                                for (int i = 0; i < optionsvalues.length; i++) {
+                                  if (i != index) {
+                                    optionsvalues[i] = false;
+                                  }
+                                }
+                              });
+                            },
+                          )),
+                  if (context.isResident)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            context
+                                .read<VotePostCubit>()
+                                .votePost(widget.post.id, chooseId);
+                          },
+                          child: const Text("Prześlij Glos")),
+                    ),
+                ],
+              )
           ],
         ),
       ),

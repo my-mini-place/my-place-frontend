@@ -1,4 +1,3 @@
-import 'package:basics/Api/Account_Managment/Users_cubit/users_cubit.dart';
 import 'package:basics/Api/Posts/create_post_cubit/create_post_cubit.dart';
 import 'package:basics/Api/Posts/delete_post_cubit/delete_post_cubit.dart';
 import 'package:basics/Api/Posts/edit_post_cubit/edit_post_cubit.dart';
@@ -11,13 +10,9 @@ import 'package:basics/Presentation/Posts_Page/post_widget.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Utils/extension.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
-import 'package:elegant_notification/elegant_notification.dart';
-import 'package:elegant_notification/resources/arrays.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
 
 class PostPage extends StatefulWidget {
   const PostPage({super.key});
@@ -117,8 +112,7 @@ class _PostPageState extends State<PostPage> {
               }
 
               if (state is ErrorGetPosts) {
-                NotificationManager.showError(
-                    context, "Get Posts", "Error w czasie wczytywania postów");
+                isLoading = false;
               }
 
               return FractionallySizedBox(

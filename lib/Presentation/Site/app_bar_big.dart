@@ -1,5 +1,8 @@
-import 'package:basics/Api/Auth_token_cubit/auth_cubit.dart';
-import 'package:basics/Api/Login_cubit/login_cubit.dart';
+import 'package:basics/Api/Auth/Auth_token_cubit/auth_cubit.dart';
+import 'package:basics/Api/Auth/Login_cubit/login_cubit.dart';
+import 'package:basics/DI.dart';
+import 'package:basics/Domain/eventbus.dart';
+import 'package:basics/Domain/logoutevent.dart';
 import 'package:basics/Presentation/Enter_Page/components/logo_widget.dart';
 import 'package:basics/Presentation/Site/app_bar_button.dart';
 
@@ -66,19 +69,25 @@ class MyAppBarBig extends StatelessWidget {
                       child: MyAppBarButton(
                         fontcolor: Colors.white,
                         text: "Logout",
-                        navigation: () async {
-                          await context.read<LoginCubit>().logout();
+                        navigation: () {
+                          context.read<LoginCubit>().logout();
+
+                          getIt
+                              .get<EventBusManager>()
+                              .eventBus
+                              .fire(UserLogoutEvent());
 
                           context.goNamed('enter');
                         },
                       )),
-                Padding(
-                    padding: const EdgeInsets.only(right: 30),
-                    child: MyAppBarButton(
-                      fontcolor: Colors.white,
-                      text: "Home",
-                      navigation: () => {context.go("/home")},
-                    )),
+                if (state is AuthorizationState)
+                  Padding(
+                      padding: const EdgeInsets.only(right: 30),
+                      child: MyAppBarButton(
+                        fontcolor: Colors.white,
+                        text: "Home",
+                        navigation: () => {context.go("/home")},
+                      )),
                 if (state is AuthorizationInitial)
                   Padding(
                       padding: const EdgeInsets.only(right: 30),
@@ -87,15 +96,26 @@ class MyAppBarBig extends StatelessWidget {
                         text: "Login",
                         navigation: () => {context.go('/login')},
                       )),
-                const Padding(
-                  padding: EdgeInsets.only(right: 40),
-                  child: Center(
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage('assets/icon.jpg'),
+                if (state is AuthorizationState)
+                  const Padding(
+                    padding: EdgeInsets.only(right: 40),
+                    child: Center(
+                      child: CircleAvatar(
+                        radius: 25,
+                        backgroundImage: AssetImage('assets/icon.jpg'),
+                      ),
                     ),
                   ),
-                ),
+                if (state is AuthorizationInitial)
+                  const Padding(
+                    padding: EdgeInsets.only(right: 40),
+                    child: Center(
+                      child: CircleAvatar(
+                        radius: 23,
+                        child: Icon(Icons.person),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ],

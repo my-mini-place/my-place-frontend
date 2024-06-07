@@ -1,4 +1,4 @@
-import 'package:basics/Api/Forgot_password_cubit/forgot_cubit.dart';
+import 'package:basics/Api/Auth/Forgot_password_cubit/forgot_cubit.dart';
 import 'package:basics/Domain/auth_entities/reset_password.dart';
 import 'package:basics/Domain/value_objects/colors.dart';
 import 'package:basics/Presentation/Site/app_page.dart';

@@ -1,5 +1,5 @@
 import 'package:alert_dialog/alert_dialog.dart';
-import 'package:basics/Api/Login_cubit/login_cubit.dart';
+import 'package:basics/Api/Auth/Login_cubit/login_cubit.dart';
 
 import 'package:basics/Presentation/Login_Register/components/RegisterForm.dart';
 

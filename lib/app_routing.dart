@@ -8,13 +8,25 @@ import 'package:basics/Presentation/ForgotPassword_Page/forgot_password_page.dar
 import 'package:basics/Presentation/ForgotPassword_Page/reset_password_page.dart';
 import 'package:basics/Presentation/Home_Page/homepage.dart';
 import 'package:basics/Presentation/Login_Register/login_page.dart';
-import 'package:basics/Presentation/Posts_Page/post_page.dart';
+import 'package:basics/Presentation/Posts_Page/posts_page.dart';
 import 'package:basics/Presentation/Profile_Page/profile_page.dart';
+import 'package:basics/Presentation/Utils/extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter routerConfig = GoRouter(
   initialLocation: '/',
+  redirect: (state, context) {
+    // Tutaj możesz dodać globalne przekierowania
+    final loggedIn = isAuthenticated(state);
+    final goingToLoginorEnterPage =
+        context.fullPath == '/login' || context.fullPath == '/';
+
+    if (!loggedIn && !goingToLoginorEnterPage) {
+      return '/login';
+    }
+    return null;
+  },
   routes: <RouteBase>[
     GoRoute(
       path: '/',

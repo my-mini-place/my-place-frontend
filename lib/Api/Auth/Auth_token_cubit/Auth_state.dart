@@ -4,8 +4,10 @@ part of 'auth_cubit.dart';
 sealed class AuthState {}
 
 final class AuthorizationState extends AuthState {
-  AuthorizationState(this.token);
+  AuthorizationState(this.token, this.userRole, this.userId);
   final Token token;
+  final Roles userRole;
+  final String userId;
 }
 
 final class AuthorizationInitial extends AuthState {}

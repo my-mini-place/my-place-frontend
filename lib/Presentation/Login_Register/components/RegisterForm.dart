@@ -1,4 +1,4 @@
-import 'package:basics/Api/Login_cubit/login_cubit.dart';
+import 'package:basics/Api/Auth/Login_cubit/login_cubit.dart';
 import 'package:basics/Domain/auth_entities/register.dart';
 import 'package:basics/Domain/value_objects/colors.dart';
 import 'package:basics/Presentation/Login_Register/components/register_box.dart';

@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:basics/Domain/Interfaces/auth_interface.dart';
 import 'package:basics/Domain/auth_entities/token.dart';
+import 'package:basics/Domain/auth_entities/user_roles.dart';
 
 import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -19,7 +22,8 @@ class AuthCubit extends Cubit<AuthState> with HydratedMixin<AuthState> {
     String type = json['type'];
     switch (type) {
       case 'AuthorizationState':
-        return AuthorizationState(Token(accessToken: json['token']));
+        return AuthorizationState(Token(accessToken: json['token']),
+            stringToRole(json['role']), json['id']);
       case 'AuthorizationInitial':
         return AuthorizationInitial();
       default:
@@ -37,6 +41,8 @@ class AuthCubit extends Cubit<AuthState> with HydratedMixin<AuthState> {
       Map<String, dynamic> result = {};
       result['type'] = 'AuthorizationState';
       result['token'] = state.token.accessToken;
+      result['role'] = roleToString(state.userRole);
+      result['id'] = state.userId;
 
       return result;
     } else if (state is AuthorizationInitial) {
@@ -56,9 +62,18 @@ class AuthCubit extends Cubit<AuthState> with HydratedMixin<AuthState> {
   }
 
   void setToken(Token token) {
-    emit(AuthorizationState(token));
+    Map<String, dynamic> userData = decodeUserData(token.accessToken);
+
+    emit(AuthorizationState(
+        token, stringToRole(userData['Role']), userData['Id']));
   }
 
+  Map<String, dynamic> decodeUserData(String code) {
+    String normalizedSource = base64Url.normalize(code.split(".")[1]);
+    String data = utf8.decode(base64Url.decode(normalizedSource));
+    Map<String, dynamic> userData = jsonDecode(data);
+    return userData;
+  }
   // @override
   // AuthorizationState fromJson(Map<String, dynamic>? json) {
   //   return AuthorizationState.fromJson(json);

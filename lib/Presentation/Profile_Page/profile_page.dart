@@ -1,5 +1,6 @@
 import 'package:basics/Api/Account_Managment/User_info/user_info_cubit.dart';
 import 'package:basics/Domain/account_manager/userdetails.dart';
+import 'package:basics/Presentation/Profile_Page/components/info_edit_tile.dart';
 import 'package:basics/Presentation/Profile_Page/components/info_tile.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
@@ -40,13 +41,20 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class UserPersonal extends StatelessWidget {
+class UserPersonal extends StatefulWidget {
   const UserPersonal({
     super.key,
     required this.userInfo,
   });
 
   final UserFullInfo userInfo;
+
+  @override
+  State<UserPersonal> createState() => _UserPersonalState();
+}
+
+class _UserPersonalState extends State<UserPersonal> {
+  bool isEditing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,55 +64,72 @@ class UserPersonal extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           gapH40,
-          const Text("Informacje użytkownika", style: TextStyle(fontSize: 30)),
-          const Divider(),
-          gapH10,
-          const Text("Podstawowe:", style: TextStyle(fontSize: 20)),
-          InfoTile(
-            title: "Imię",
-            description: userInfo.name,
-          ),
-          InfoTile(
-            title: "Nazwisko",
-            description: userInfo.surname,
-          ),
-          InfoTile(
-            title: "Email",
-            description: userInfo.email,
-          ),
-          InfoTile(
-            title: "Numer telefonu",
-            description: userInfo.phoneNumber,
-          ),
+          !isEditing
+              ? Column(
+                  children: [
+                    const Text("Informacje użytkownika",
+                        style: TextStyle(fontSize: 30)),
+                    const Divider(),
+                    gapH10,
+                    const Text("Podstawowe:", style: TextStyle(fontSize: 20)),
+                    InfoTile(
+                      title: "Imię",
+                      description: widget.userInfo.name,
+                    ),
+                    InfoTile(
+                      title: "Nazwisko",
+                      description: widget.userInfo.surname,
+                    ),
+                    InfoTile(
+                      title: "Email",
+                      description: widget.userInfo.email,
+                    ),
+                    InfoTile(
+                      title: "Numer telefonu",
+                      description: widget.userInfo.phoneNumber,
+                    ),
+                  ],
+                )
+              : InfoEditForm(widget: widget),
           Padding(
             padding: const EdgeInsets.all(2.0),
             child: Align(
                 alignment: Alignment.topRight,
                 child: InkWell(
-                    onTap: () {},
-                    child: const Text(
-                      "Edit info",
-                      style: TextStyle(decoration: TextDecoration.underline),
-                    ))),
+                    onTap: () {
+                      setState(() {
+                        isEditing = !isEditing;
+                      });
+                    },
+                    child: !isEditing
+                        ? const Text(
+                            "Edit info",
+                            style:
+                                TextStyle(decoration: TextDecoration.underline),
+                          )
+                        : const Text("End editing",
+                            style: TextStyle(
+                                decoration: TextDecoration.underline)))),
           ),
           const SizedBox(height: 10),
-          if (userInfo.role == "Resident")
+          if (widget.userInfo.role == "Resident")
             Column(
               children: [
                 const Text("Adres:", style: TextStyle(fontSize: 20)),
                 InfoTile(
-                    title: "Ulica", description: userInfo.residence!.street),
+                    title: "Ulica",
+                    description: widget.userInfo.residence!.street),
                 InfoTile(
                   title: "Numer budynku",
-                  description: userInfo.residence!.buildingNumber,
+                  description: widget.userInfo.residence!.buildingNumber,
                 ),
                 InfoTile(
                   title: "Numer mieszkania",
-                  description: userInfo.residence!.apartmentNumber,
+                  description: widget.userInfo.residence!.apartmentNumber,
                 ),
                 InfoTile(
                   title: "Piętro",
-                  description: userInfo.residence!.floor.toString(),
+                  description: widget.userInfo.residence!.floor.toString(),
                 ),
                 const SizedBox(height: 10),
                 const Text("Informacje o bloku:",
@@ -122,6 +147,45 @@ class UserPersonal extends StatelessWidget {
           gapH40
         ],
       ),
+    );
+  }
+}
+
+class InfoEditForm extends StatelessWidget {
+  const InfoEditForm({
+    super.key,
+    required this.widget,
+  });
+
+  final UserPersonal widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text("Informacje użytkownika", style: TextStyle(fontSize: 30)),
+        const Divider(),
+        gapH10,
+        const Text("Podstawowe:", style: TextStyle(fontSize: 20)),
+        InfoEditTile(
+          title: "Imię",
+          description: widget.userInfo.name,
+        ),
+        InfoEditTile(
+          title: "Nazwisko",
+          description: widget.userInfo.surname,
+        ),
+        InfoEditTile(
+          title: "Email",
+          description: widget.userInfo.email,
+        ),
+        InfoEditTile(
+          title: "Numer telefonu",
+          description: widget.userInfo.phoneNumber,
+        ),
+        gapH10,
+        TextButton(onPressed: () {}, child: const Text("Zapisz zmiany"))
+      ],
     );
   }
 }

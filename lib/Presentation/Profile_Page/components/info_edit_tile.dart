@@ -4,11 +4,14 @@ import 'package:flutter/widgets.dart';
 
 class InfoEditTile extends StatefulWidget {
   const InfoEditTile(
-      {super.key, required this.title, required this.description});
+      {super.key,
+      required this.title,
+      required this.description,
+      required this.controller});
 
   final String title;
   final String description;
-
+  final TextEditingController controller;
   @override
   State<InfoEditTile> createState() => _InfoEditTileState();
 }
@@ -18,7 +21,7 @@ class _InfoEditTileState extends State<InfoEditTile> {
 
   @override
   void initState() {
-    textEditing = TextEditingController();
+    textEditing = widget.controller;
     textEditing.text = widget.description;
     super.initState();
   }

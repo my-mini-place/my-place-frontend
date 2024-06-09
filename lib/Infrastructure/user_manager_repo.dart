@@ -1,17 +1,19 @@
 import 'package:basics/Domain/account_manager/User.dart';
 import 'package:basics/Domain/account_manager/userdetails.dart';
+import 'package:basics/Infrastructure/basic_repo.dart';
 import 'package:basics/Infrastructure/dio_client.dart';
 import 'package:basics/Infrastructure/urls.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:dartz/dartz.dart';
 import 'package:basics/DI.dart';
+import 'package:basics/Domain/account_manager/usereditInfo.dart';
 
 @lazySingleton
-class UserManagerRepo {
+class UserManagerRepo extends BasicRepo {
   final dioClient = getIt.get<DioClient>();
 
-  UserManagerRepo();
+  UserManagerRepo() : super();
 
   Future<Either<String, List<User>>> getAllUsers() async {
     try {
@@ -30,6 +32,27 @@ class UserManagerRepo {
       String userId, String accessToken) async {
     try {
       final response = await dioClient.dio.get('$userInfoUrl$userId',
+          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+      UserFullInfo userInfo = UserFullInfo.fromJson(response.data);
+      return Right(userInfo);
+    } on DioException catch (e) {
+      return Left(e.message!);
+    }
+  }
+
+  Future<Either<String, UserFullInfo>> editUserInfo(
+      String? email, String? name, String? surname, String? phoneNumber) async {
+    try {
+      var editUserInfo = UserEditInfo(
+          id: userId,
+          email: email,
+          name: name,
+          phoneNumber: phoneNumber,
+          surname: surname);
+
+      var datajson = editUserInfo.toJson();
+      final response = await dioClient.dio.patch(EditUserInfoUrl,
+          data: datajson,
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       UserFullInfo userInfo = UserFullInfo.fromJson(response.data);
       return Right(userInfo);

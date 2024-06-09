@@ -13,6 +13,14 @@ extension ContextExtension on BuildContext {
     return false;
   }
 
+  bool get isUser {
+    final authState = read<AuthCubit>().state;
+    if (authState is AuthorizationState) {
+      return authState.userRole == Roles.user;
+    }
+    return false;
+  }
+
   bool get isResident {
     final authState = read<AuthCubit>().state;
     if (authState is AuthorizationState) {

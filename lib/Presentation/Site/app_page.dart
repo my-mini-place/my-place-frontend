@@ -22,7 +22,7 @@ class AppPageBasics extends StatelessWidget {
             children: <Widget>[
               ConstrainedBox(
                 constraints:
-                    BoxConstraints(minHeight: constraints.maxHeight - 200),
+                    BoxConstraints(minHeight: constraints.maxHeight - 120),
                 child: Column(
                   children: [
                     const MyAppBarSwitcher(),

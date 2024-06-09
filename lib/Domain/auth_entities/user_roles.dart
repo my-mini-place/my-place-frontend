@@ -1,9 +1,4 @@
-enum Roles {
-  administrator,
-  manager,
-  resident,
-  repairman,
-}
+enum Roles { administrator, manager, resident, repairman, user }
 
 Roles stringToRole(String roleString) {
   switch (roleString) {
@@ -20,7 +15,7 @@ Roles stringToRole(String roleString) {
       return Roles.repairman;
 
     default:
-      return Roles.administrator;
+      return Roles.user;
   }
 }
 
@@ -39,6 +34,6 @@ String roleToString(Roles role) {
       return "Repairman";
 
     default:
-      return "Administrator";
+      return "User";
   }
 }

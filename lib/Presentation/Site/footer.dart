@@ -16,19 +16,11 @@ class Footer extends StatelessWidget {
         constraints: const BoxConstraints(maxHeight: 300),
         margin: const EdgeInsets.only(top: 20),
         color: Colors.black,
-        height: 200,
+        height: 140,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             gapH10,
-            const Text(
-              'MyPlace is an app that makes living in society from your flat easier and happier',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-              ),
-            ),
             gapH10,
             RichText(
               text: TextSpan(
@@ -36,8 +28,8 @@ class Footer extends StatelessWidget {
                   TextSpan(
                     text: 'Visit our Facebook Page',
                     style: const TextStyle(
-                      color: Colors.blue,
-                      fontSize: 16,
+                      color: Colors.white,
+                      fontSize: 12,
                       decoration: TextDecoration.underline,
                     ),
                     recognizer: TapGestureRecognizer()
@@ -54,7 +46,7 @@ class Footer extends StatelessWidget {
               'Address: 123 Happy Street, Happy Town, HT 12345',
               style: TextStyle(
                 color: Colors.grey,
-                fontSize: 16,
+                fontSize: 12,
               ),
             ),
             gapH10,
@@ -62,7 +54,7 @@ class Footer extends StatelessWidget {
               'Email: contact@myplace.com',
               style: TextStyle(
                 color: Colors.grey,
-                fontSize: 16,
+                fontSize: 12,
               ),
             ),
             const Flexible(

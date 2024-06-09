@@ -1,3 +1,4 @@
+import 'package:basics/Api/Account_Managment/User_edit_info/user_edit_info.dart';
 import 'package:basics/Api/Account_Managment/User_info/user_info_cubit.dart';
 import 'package:basics/Api/Account_Managment/Users_cubit/users_cubit.dart';
 import 'package:basics/Api/Auth/Auth_token_cubit/auth_cubit.dart';
@@ -49,6 +50,7 @@ class DependencyInjection extends StatelessWidget {
         BlocProvider(create: (context) => getIt.get<DeletePostCubit>()),
         BlocProvider(create: (context) => getIt.get<VotePostCubit>()),
         BlocProvider(create: (context) => getIt.get<EditPostCubit>()),
+        BlocProvider(create: (context) => getIt.get<UserEditInfoCubit>()),
       ],
       child: inputWidget,
     );

@@ -1,5 +1,6 @@
 import 'package:basics/Presentation/Home_Page/components/function_icon.dart';
 import 'package:basics/Presentation/Site/app_bar_changer.dart';
+import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Site/footer.dart';
 import 'package:basics/Presentation/Utils/Gaps.dart';
 import 'package:basics/Presentation/Utils/extension.dart';
@@ -16,12 +17,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        // bottomNavigationBar: const Footer(),
-        body: SingleChildScrollView(
-      child: Column(
+    return AppPageBasics(children: [
+      Column(
         children: [
-          const MyAppBarSwitcher(),
+          gapH40,
+          if (context.isUser)
+            const Text(
+                "OCZEKUJESZ NA NADANIE ROLI PRZEZ ADMINISTRATORA PROSZĘ CZEKAĆ"),
           gapH40,
           Center(
             child: Padding(
@@ -43,20 +45,22 @@ class HomePage extends StatelessWidget {
                     context.goNamed("profile");
                   },
                 ),
-                FunctionIcon(
-                  title: "Usterki",
-                  icon: Icons.construction,
-                  navigation: () {
-                    context.go("/home/usterka");
-                  },
-                ),
-                FunctionIcon(
-                  title: "Ogłoszenia",
-                  icon: Icons.assignment_late_outlined,
-                  navigation: () {
-                    context.replaceNamed("posts");
-                  },
-                ),
+                if (!context.isUser)
+                  FunctionIcon(
+                    title: "Usterki",
+                    icon: Icons.construction,
+                    navigation: () {
+                      context.go("/home/usterka");
+                    },
+                  ),
+                if (!context.isUser)
+                  FunctionIcon(
+                    title: "Ogłoszenia",
+                    icon: Icons.assignment_late_outlined,
+                    navigation: () {
+                      context.replaceNamed("posts");
+                    },
+                  ),
                 if (context.isAdmin)
                   FunctionIcon(
                     title: "Panel Administratora",
@@ -65,28 +69,28 @@ class HomePage extends StatelessWidget {
                       context.goNamed("admin");
                     },
                   ),
-                FunctionIcon(
-                  title: "Kalendarz",
-                  icon: Icons.calendar_today,
-                  navigation: () {
-                    context.pushNamed("calendar");
-                  },
-                ),
-                FunctionIcon(
-                  title: "Dokumenty",
-                  icon: Icons.edit_document,
-                  navigation: () {
-                    context.replaceNamed("doc");
-                  },
-                ),
+                if (!context.isUser)
+                  FunctionIcon(
+                    title: "Kalendarz",
+                    icon: Icons.calendar_today,
+                    navigation: () {
+                      context.pushNamed("calendar");
+                    },
+                  ),
+                if (!context.isUser)
+                  FunctionIcon(
+                    title: "Dokumenty",
+                    icon: Icons.edit_document,
+                    navigation: () {
+                      context.replaceNamed("doc");
+                    },
+                  ),
               ],
             ),
           ),
           gapH40,
-          gapH40,
-          const Align(alignment: Alignment.bottomCenter, child: Footer())
         ],
       ),
-    ));
+    ]);
   }
 }

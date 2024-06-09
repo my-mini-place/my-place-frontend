@@ -11,7 +11,8 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import 'Api/Account_Managment/User_info/user_info_cubit.dart' as _i18;
+import 'Api/Account_Managment/User_edit_info/user_edit_info.dart' as _i18;
+import 'Api/Account_Managment/User_info/user_info_cubit.dart' as _i19;
 import 'Api/Account_Managment/Users_cubit/users_cubit.dart' as _i16;
 import 'Api/Auth/Auth_token_cubit/auth_cubit.dart' as _i15;
 import 'Api/Auth/Forgot_password_cubit/forgot_cubit.dart' as _i9;
@@ -64,7 +65,11 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i7.AuthInterface>(),
           gh<_i15.AuthCubit>(),
         ));
-    gh.lazySingleton<_i18.UserInfoCubit>(() => _i18.UserInfoCubit(
+    gh.lazySingleton<_i18.UserEditInfoCubit>(() => _i18.UserEditInfoCubit(
+          gh<_i6.UserManagerRepo>(),
+          gh<_i15.AuthCubit>(),
+        ));
+    gh.lazySingleton<_i19.UserInfoCubit>(() => _i19.UserInfoCubit(
           gh<_i6.UserManagerRepo>(),
           gh<_i15.AuthCubit>(),
         ));

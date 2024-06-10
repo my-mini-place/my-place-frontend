@@ -1,4 +1,3 @@
-import 'package:basics/Domain/posts/option.dart';
 import 'package:basics/Domain/posts/option_create.dart';
 
 class PostCreate {

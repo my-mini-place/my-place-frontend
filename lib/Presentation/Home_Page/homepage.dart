@@ -1,7 +1,5 @@
 import 'package:basics/Presentation/Home_Page/components/function_icon.dart';
-import 'package:basics/Presentation/Site/app_bar_changer.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
-import 'package:basics/Presentation/Site/footer.dart';
 import 'package:basics/Presentation/Utils/Gaps.dart';
 import 'package:basics/Presentation/Utils/extension.dart';
 

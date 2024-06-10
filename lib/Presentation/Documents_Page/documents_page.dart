@@ -1,6 +1,15 @@
+import 'dart:io';
+
 import 'package:basics/Presentation/Site/app_page.dart';
+import 'package:basics/Presentation/Utils/extension.dart';
+import 'package:basics/app_routing.dart';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:searchable_listview/searchable_listview.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:convert';
 
 class DocumentsPage extends StatefulWidget {
   const DocumentsPage({super.key});
@@ -27,24 +36,54 @@ class ExampleApp extends StatefulWidget {
 
 class _ExampleAppState extends State<ExampleApp> {
   final List<Actor> actors = [
-    Actor(age: 47, name: 'Leonardo', lastName: 'DiCaprio'),
-    Actor(age: 58, name: 'Johnny', lastName: 'Depp'),
-    Actor(age: 78, name: 'Robert', lastName: 'De Niro'),
-    Actor(age: 44, name: 'Tom', lastName: 'Hardy'),
-    Actor(age: 66, name: 'Denzel', lastName: 'Washington'),
-    Actor(age: 49, name: 'Ben', lastName: 'Affleck'),
+    Actor(
+        id: 12,
+        date: DateTime(2023, 6, 30),
+        name: 'Leonardo',
+        lastName: 'DiCaprio'),
+    Actor(
+        id: 11, date: DateTime(2023, 6, 30), name: 'Johnny', lastName: 'Depp'),
+    Actor(
+        id: 10,
+        date: DateTime(2023, 6, 30),
+        name: 'Robert',
+        lastName: 'De Niro'),
+    Actor(id: 9, date: DateTime(2023, 6, 30), name: 'Tom', lastName: 'Hardy'),
+    Actor(
+        id: 8,
+        date: DateTime(2023, 6, 30),
+        name: 'Denzel',
+        lastName: 'Washington'),
+    Actor(id: 7, date: DateTime(2023, 6, 30), name: 'Ben', lastName: 'Affleck'),
   ];
 
   final Map<String, List<Actor>> mapOfActors = {
     'test 1': [
-      Actor(age: 47, name: 'Leonardo', lastName: 'DiCaprio'),
-      Actor(age: 66, name: 'Denzel', lastName: 'Washington'),
-      Actor(age: 49, name: 'Ben', lastName: 'Affleck'),
+      Actor(
+          id: 6,
+          date: DateTime(2023, 7, 30),
+          name: 'Leonardo',
+          lastName: 'DiCaprio'),
+      Actor(
+          id: 5,
+          date: DateTime(2023, 6, 2),
+          name: 'Denzel',
+          lastName: 'Washington'),
+      Actor(
+          id: 4,
+          date: DateTime(2021, 11, 30),
+          name: 'Ben',
+          lastName: 'Affleck'),
     ],
     'test 2': [
-      Actor(age: 58, name: 'Johnny', lastName: 'Depp'),
-      Actor(age: 78, name: 'Robert', lastName: 'De Niro'),
-      Actor(age: 44, name: 'Tom', lastName: 'Hardy'),
+      Actor(
+          id: 1, date: DateTime(2023, 5, 11), name: 'Johnny', lastName: 'Depp'),
+      Actor(
+          id: 2,
+          date: DateTime(2022, 6, 10),
+          name: 'Robert',
+          lastName: 'De Niro'),
+      Actor(id: 3, date: DateTime(2023, 6, 30), name: 'Tom', lastName: 'Hardy'),
     ]
   };
 
@@ -57,7 +96,70 @@ class _ExampleAppState extends State<ExampleApp> {
       height: 1000,
       child: Column(
         children: [
-          const Text('Searchable list with divider'),
+          SizedBox(
+            width: 600,
+            height: 50,
+          ),
+          if (context.isAdmin)
+            GestureDetector(
+              onTap: () async {
+                FilePickerResult? result = await FilePicker.platform.pickFiles(
+                    type: FileType.custom, allowedExtensions: ['pdf']);
+                if (result != null) {
+                  PlatformFile file = result.files.first;
+                  print('Szczur');
+                  print(file.path);
+
+                  if (file.path != null) {
+                    String path = file.path!;
+                    print('Szczur');
+
+                    // Prepare the request
+                    var request = http.MultipartRequest(
+                      'POST',
+                      Uri.parse(
+                          'https://localhost:7281/swagger/index.html/AddDocumentToDb'),
+                    );
+                    print('Szczur');
+
+                    // Add the file to the request
+                    request.files.add(await http.MultipartFile.fromPath(
+                      'file',
+                      path,
+                      contentType: MediaType('application', 'pdf'),
+                    ));
+
+                    // Add other fields (e.g., name, lastName, date)
+                    request.fields['firstName'] = 'John';
+                    request.fields['lastName'] = 'Doe';
+                    request.fields['date'] = DateTime.now().toString();
+
+                    // Send the request
+                    var response = await request.send();
+
+                    if (response.statusCode == 200) {
+                      print('File uploaded successfully');
+                    }
+                  } else {
+                    print('File upload failed with status: 1');
+                  }
+
+                  // Możesz dodać swoją logikę przetwarzania pliku PDF tutaj
+                } else {
+                  // Użytkownik anulował wybieranie pliku
+                }
+                // Akcja po kliknięciu na "Dodaj Nowy Dokument"
+                print('Dodaj Nowy Dokument clicked');
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Dodaj Dokument'),
+                decoration: BoxDecoration(
+                  color: Colors.orange,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+            ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(15),
@@ -78,7 +180,8 @@ class _ExampleAppState extends State<ExampleApp> {
 
   void addActor() {
     actors.add(Actor(
-      age: 10,
+      id: 0,
+      date: DateTime(2023, 6, 10),
       lastName: 'Ali',
       name: 'ALi',
     ));
@@ -87,7 +190,7 @@ class _ExampleAppState extends State<ExampleApp> {
 
   Widget simpleSearchWithSort() {
     return SearchableList<Actor>(
-      sortPredicate: (a, b) => a.age.compareTo(b.age),
+      sortPredicate: (a, b) => a.date.compareTo(b.date),
       itemBuilder: (item) {
         return ActorItem(actor: item);
       },
@@ -172,7 +275,7 @@ class _ExampleAppState extends State<ExampleApp> {
       },
       sortWidget: const Icon(Icons.sort),
       sortPredicate: (a, b) {
-        return a.age.compareTo(b.age);
+        return a.date.compareTo(b.date);
       },
     );
   }
@@ -243,7 +346,7 @@ class _ExampleAppState extends State<ExampleApp> {
       hideEmptyExpansionItems: true,
       emptyWidget: const EmptyView(),
       inputDecoration: InputDecoration(
-        labelText: "Search Actor",
+        labelText: "Search User",
         fillColor: Colors.white,
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(
@@ -270,10 +373,10 @@ class ActorItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: 60,
+        height: 70,
         decoration: BoxDecoration(
           color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(5),
         ),
         child: Row(
           children: [
@@ -306,12 +409,34 @@ class ActorItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Age: ${actor.age}',
+                  'Date of Document: ${actor.date}',
                   style: const TextStyle(
                     color: Colors.black,
                   ),
                 ),
               ],
+            ),
+            const SizedBox(
+              width: 100,
+            ),
+            GestureDetector(
+              onTap: () {
+                // Akcja, którą chcesz wykonać po kliknięciu
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Colors.orange,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: const Text(
+                  'PDF File',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -339,13 +464,15 @@ class EmptyView extends StatelessWidget {
 }
 
 class Actor {
-  int age;
+  int id;
   String name;
   String lastName;
+  DateTime date;
 
   Actor({
-    required this.age,
+    required this.id,
     required this.name,
     required this.lastName,
+    required this.date,
   });
 }

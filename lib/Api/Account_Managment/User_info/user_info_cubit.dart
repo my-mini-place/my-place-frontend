@@ -7,8 +7,6 @@ import 'package:bloc/bloc.dart';
 
 import 'package:basics/Infrastructure/user_manager_repo.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 
 import 'package:injectable/injectable.dart';
 part 'user_info_state.dart';

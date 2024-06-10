@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:basics/Api/Auth/Auth_token_cubit/auth_cubit.dart';
 import 'package:basics/DI.dart';
-import 'package:basics/Presentation/Utils/extension.dart';
 
 class BasicRepo {
   final AuthCubit authCubit = getIt.get<AuthCubit>();

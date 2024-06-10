@@ -1,7 +1,6 @@
 import 'package:basics/Domain/posts/postcreate.dart';
 import 'package:basics/Infrastructure/posts_repo.dart';
 import 'package:bloc/bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
 part 'create_post_state.dart';

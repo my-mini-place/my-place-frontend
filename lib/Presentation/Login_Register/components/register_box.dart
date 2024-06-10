@@ -3,9 +3,7 @@ import 'package:basics/Api/Auth/Login_cubit/login_cubit.dart';
 
 import 'package:basics/Presentation/Login_Register/components/RegisterForm.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:faker/faker.dart';

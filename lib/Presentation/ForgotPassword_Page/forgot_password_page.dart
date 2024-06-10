@@ -79,7 +79,7 @@ class _ForgotPageState extends State<ForgotPage> {
                         ElevatedButton(
                             style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all<Color>(myOrange),
+                                  WidgetStateProperty.all<Color>(myOrange),
                             ),
                             onPressed: () async {
                               await context

@@ -199,9 +199,9 @@ class FormWidget extends StatelessWidget {
                   .login(Login(username, enteredPassword));
             },
             style: const ButtonStyle(
-                padding: MaterialStatePropertyAll(
+                padding: WidgetStatePropertyAll(
                     EdgeInsets.only(top: 15, left: 25, right: 25, bottom: 15)),
-                backgroundColor: MaterialStatePropertyAll(myOrange)),
+                backgroundColor: WidgetStatePropertyAll(myOrange)),
             child: const Text('Login', style: TextStyle(color: Colors.white)),
           ),
           Padding(

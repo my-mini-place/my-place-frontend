@@ -1,16 +1,11 @@
 import 'package:basics/Api/Auth/Auth_token_cubit/auth_cubit.dart';
 import 'package:basics/DI.dart';
-import 'package:basics/Domain/account_manager/userdetails.dart';
-import 'package:basics/Domain/account_manager/usereditInfo.dart';
 import 'package:basics/Domain/eventbus.dart';
 import 'package:basics/Domain/logoutevent.dart';
 import 'package:bloc/bloc.dart';
 
 import 'package:basics/Infrastructure/user_manager_repo.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 
 import 'package:injectable/injectable.dart';
 part 'user_edit_state.dart';

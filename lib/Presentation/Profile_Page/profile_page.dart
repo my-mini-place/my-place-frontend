@@ -1,14 +1,12 @@
 import 'package:basics/Api/Account_Managment/User_edit_info/user_edit_info.dart';
 import 'package:basics/Api/Account_Managment/User_info/user_info_cubit.dart';
 import 'package:basics/Domain/account_manager/userdetails.dart';
-import 'package:basics/Domain/account_manager/usereditInfo.dart';
 import 'package:basics/Domain/value_objects/notification.dart';
 import 'package:basics/Presentation/Profile_Page/components/info_edit_tile.dart';
 import 'package:basics/Presentation/Profile_Page/components/info_tile.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:basics/Presentation/Utils/extension.dart';

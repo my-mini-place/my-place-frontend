@@ -253,9 +253,9 @@ class RegisterForm extends StatelessWidget {
                       PhoneNumber: number));
                 },
                 style: const ButtonStyle(
-                    padding: MaterialStatePropertyAll(EdgeInsets.only(
+                    padding: WidgetStatePropertyAll(EdgeInsets.only(
                         top: 15, left: 30, right: 30, bottom: 15)),
-                    backgroundColor: MaterialStatePropertyAll(myOrange)),
+                    backgroundColor: WidgetStatePropertyAll(myOrange)),
                 child: const Text('Register',
                     style: TextStyle(color: Colors.white)),
               ),

@@ -1,4 +1,3 @@
-import 'package:basics/DI.dart';
 import 'package:basics/Domain/posts/post.dart';
 import 'package:basics/Domain/paged_list.dart';
 import 'package:basics/Infrastructure/posts_repo.dart';

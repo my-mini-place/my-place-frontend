@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:basics/DI.dart';
+import 'package:basics/Infrastructure/dio_client.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Utils/extension.dart';
 import 'package:basics/app_routing.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:get_it/get_it.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -17,6 +21,8 @@ class DocumentsPage extends StatefulWidget {
   @override
   State<DocumentsPage> createState() => _DocumentsPageState();
 }
+
+DioClient dioClient = getIt.get<DioClient>();
 
 class _DocumentsPageState extends State<DocumentsPage> {
   @override
@@ -96,68 +102,62 @@ class _ExampleAppState extends State<ExampleApp> {
       height: 1000,
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             width: 600,
             height: 50,
           ),
           if (context.isAdmin)
             GestureDetector(
               onTap: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles(
-                    type: FileType.custom, allowedExtensions: ['pdf']);
+                var result = (await FilePicker.platform.pickFiles(
+                  type: FileType.custom,
+                  allowedExtensions: ['pdf'],
+                  withData: true,
+                  compressionQuality: 30,
+                  onFileLoading: (FilePickerStatus status) => print(status),
+                ));
                 if (result != null) {
                   PlatformFile file = result.files.first;
-                  print('Szczur');
-                  print(file.path);
+                  //    file.bytes
 
-                  if (file.path != null) {
-                    String path = file.path!;
-                    print('Szczur');
+                  // Encode the file content to UTF-8
 
-                    // Prepare the request
-                    var request = http.MultipartRequest(
-                      'POST',
-                      Uri.parse(
-                          'https://localhost:7281/swagger/index.html/AddDocumentToDb'),
+                  // Prepare the payload
+                  final payload = {
+                    "documentId": 100, // adjust as necessary
+                    "userId": -4, // adjust as necessary
+                    "content": base64Encode(file.bytes!),
+                    "name": file.name,
+                    "signed": true, // adjust as necessary
+                    "description":
+                        "Uploaded through app", // adjust as necessary
+                    "creation_date": DateTime.now().toIso8601String()
+                  };
+
+                  try {
+                    final response = await dioClient.dio.post(
+                      'https://localhost:7281/AddDocumentToDb',
+                      data: jsonEncode(payload),
+                      options: Options(
+                          headers: {'Content-Type': 'application/json'}),
                     );
-                    print('Szczur');
-
-                    // Add the file to the request
-                    request.files.add(await http.MultipartFile.fromPath(
-                      'file',
-                      path,
-                      contentType: MediaType('application', 'pdf'),
-                    ));
-
-                    // Add other fields (e.g., name, lastName, date)
-                    request.fields['firstName'] = 'John';
-                    request.fields['lastName'] = 'Doe';
-                    request.fields['date'] = DateTime.now().toString();
-
-                    // Send the request
-                    var response = await request.send();
-
-                    if (response.statusCode == 200) {
-                      print('File uploaded successfully');
-                    }
-                  } else {
-                    print('File upload failed with status: 1');
+                    print('Upload successful: ${response.data}');
+                  } catch (e) {
+                    print('Error uploading file: $e');
                   }
 
-                  // Możesz dodać swoją logikę przetwarzania pliku PDF tutaj
+                  //  print(file.path);
                 } else {
-                  // Użytkownik anulował wybieranie pliku
+                  // User canceled the picker
                 }
-                // Akcja po kliknięciu na "Dodaj Nowy Dokument"
-                print('Dodaj Nowy Dokument clicked');
               },
               child: Container(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('Dodaj Dokument'),
                 decoration: BoxDecoration(
                   color: Colors.orange,
                   borderRadius: BorderRadius.circular(5),
                 ),
+                child: const Text('Dodaj Dokument'),
               ),
             ),
           Expanded(
@@ -186,27 +186,6 @@ class _ExampleAppState extends State<ExampleApp> {
       name: 'ALi',
     ));
     setState(() {});
-  }
-
-  Widget simpleSearchWithSort() {
-    return SearchableList<Actor>(
-      sortPredicate: (a, b) => a.date.compareTo(b.date),
-      itemBuilder: (item) {
-        return ActorItem(actor: item);
-      },
-      initialList: actors,
-      inputDecoration: InputDecoration(
-        labelText: "Search Actor",
-        fillColor: Colors.white,
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.blue,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-    );
   }
 
   Widget renderSimpleSearchableList() {
@@ -250,112 +229,6 @@ class _ExampleAppState extends State<ExampleApp> {
         ),
       ),
       closeKeyboardWhenScrolling: true,
-    );
-  }
-
-  Widget sliverListViewBuilder() {
-    return SearchableList<Actor>.sliver(
-      initialList: actors,
-      inputDecoration: InputDecoration(
-        labelText: "Search Actor",
-        fillColor: Colors.white,
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.blue,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-      filter: (query) {
-        return actors.where((element) => element.name.contains(query)).toList();
-      },
-      itemBuilder: (Actor actorItem) {
-        return ActorItem(actor: actorItem);
-      },
-      sortWidget: const Icon(Icons.sort),
-      sortPredicate: (a, b) {
-        return a.date.compareTo(b.date);
-      },
-    );
-  }
-
-  Widget renderAsynchSearchableListview() {
-    return SearchableList<Actor>.async(
-      itemBuilder: (Actor item) {
-        return ActorItem(actor: item);
-      },
-      asyncListCallback: () async {
-        await Future.delayed(const Duration(seconds: 5));
-        return actors;
-      },
-      asyncListFilter: (query, list) {
-        return actors
-            .where((element) =>
-                element.name.contains(query) ||
-                element.lastName.contains(query))
-            .toList();
-      },
-      seperatorBuilder: (context, index) {
-        return const Divider();
-      },
-      style: const TextStyle(fontSize: 25),
-      emptyWidget: const EmptyView(),
-      inputDecoration: InputDecoration(
-        labelText: "Search Actor",
-        fillColor: Colors.white,
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.blue,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-    );
-  }
-
-  Widget expansionSearchableList() {
-    return SearchableList<Actor>.expansion(
-      expansionListData: mapOfActors,
-      expansionTitleBuilder: (p0) {
-        return Container(
-          color: Colors.grey[300],
-          width: MediaQuery.of(context).size.width * 0.8,
-          height: 30,
-          child: Center(
-            child: Text(p0.toString()),
-          ),
-        );
-      },
-      filterExpansionData: (p0) {
-        final filteredMap = {
-          for (final entry in mapOfActors.entries)
-            entry.key: (mapOfActors[entry.key] ?? [])
-                .where((element) => element.name.contains(p0))
-                .toList()
-        };
-        return filteredMap;
-      },
-      style: const TextStyle(fontSize: 25),
-      expansionListBuilder: (int index, Actor actor) {
-        return ActorItem(
-          actor: actor,
-        );
-      },
-      hideEmptyExpansionItems: true,
-      emptyWidget: const EmptyView(),
-      inputDecoration: InputDecoration(
-        labelText: "Search User",
-        fillColor: Colors.white,
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.blue,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
     );
   }
 }

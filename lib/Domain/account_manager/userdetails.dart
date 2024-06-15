@@ -37,12 +37,10 @@ class UserFullInfo {
       residence: json['residence'] != null
           ? Residence.fromJson(json['residence'])
           : null,
-      startWorkTime: json['startWorkTime'] != null
-          ? Duration(seconds: json['startWorkTime'])
-          : null,
-      endWorkTime: json['endWorkTime'] != null
-          ? Duration(seconds: json['endWorkTime'])
-          : null,
+      startWorkTime:
+          json['startWorkTime'] != null ? const Duration(seconds: 3) : null,
+      endWorkTime:
+          json['endWorkTime'] != null ? const Duration(seconds: 3) : null,
       blockName: json['blockName'],
       role: json['role'],
       status: json['status'],

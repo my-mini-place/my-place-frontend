@@ -1,4 +1,5 @@
 import 'package:basics/Presentation/Admin_Panel_Page/Admin_Page.dart';
+import 'package:basics/Presentation/Admin_Panel_Page/user_admin_info.dart';
 import 'package:basics/Presentation/Admin_Panel_Page/user_list_page.dart';
 import 'package:basics/Presentation/Calendar_Page/CalendarPage.dart';
 
@@ -73,6 +74,12 @@ final GoRouter routerConfig = GoRouter(
         name: 'admin',
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: AdminPanelPage())),
+    GoRoute(
+        path: '/home/admin-panel/users/:userId',
+        name: 'userAdminInfo',
+        pageBuilder: (context, state) => NoTransitionPage(
+            child:
+                UserProfileAdminPage(userId: state.pathParameters['userId']!))),
 
     GoRoute(
         path: '/home/posts',

@@ -1,4 +1,5 @@
 import 'package:basics/Domain/account_manager/User.dart';
+import 'package:basics/Domain/paged_list.dart';
 
 import 'package:basics/Infrastructure/user_manager_repo.dart';
 import 'package:bloc/bloc.dart';
@@ -13,11 +14,11 @@ class UsersCubit extends Cubit<UsersState> {
 
   Future<void> getAllUsers() async {
     emit(UsersLoading());
-    final result = await userManagerRepo.getAllUsers();
-    result.fold(
-      (error) => emit(UsersError(error)),
-      (users) => emit(UsersLoaded(users)),
-    );
+    // final result = await userManagerRepo.getAllUsers();
+    // result.fold(
+    //   (error) => emit(UsersError(error)),
+    //   (users) => emit(UsersLoaded(users)),
+    // );
   }
 
   Future<void> changeUserInfo() async {}

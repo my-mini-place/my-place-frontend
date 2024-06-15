@@ -8,11 +8,10 @@ import 'package:basics/app_routing.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:searchable_listview/searchable_listview.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'dart:convert';
 
 class DocumentsPage extends StatefulWidget {

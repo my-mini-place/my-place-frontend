@@ -13,7 +13,7 @@ class Residence {
     required this.floor,
   });
 
-  factory Residence.fromJson(Map<String, dynamic> json) {
+  factory Residence.fromJson(dynamic json) {
     return Residence(
       residenceId: json['residenceId'],
       street: json['street'],

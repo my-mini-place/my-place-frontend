@@ -2,26 +2,25 @@ import 'package:basics/DI.dart';
 import 'package:basics/Domain/account_manager/user.dart';
 import 'package:basics/Domain/paged_list.dart';
 import 'package:basics/Domain/value_objects/fonts.dart';
+import 'package:basics/Infrastructure/residences_repo.dart';
 import 'package:basics/Infrastructure/user_manager_repo.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
 import 'package:data_table_2/data_table_2.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-class UserListPage extends StatefulWidget {
-  const UserListPage({super.key});
+class ResidenceListPage extends StatefulWidget {
+  const ResidenceListPage({super.key});
 
   @override
-  State<UserListPage> createState() => _UserListPageState();
+  State<ResidenceListPage> createState() => _ResidenceListPageState();
 }
 
-class _UserListPageState extends State<UserListPage> {
+class _ResidenceListPageState extends State<ResidenceListPage> {
   @override
   Widget build(BuildContext context) {
     return const AppPageBasics(children: [
@@ -33,18 +32,18 @@ class _UserListPageState extends State<UserListPage> {
       SizedBox(
         height: 800,
         width: 1000,
-        child: UsersPaginatedTable(),
+        child: ResidencesPaginatedTable(),
       )
     ]);
   }
 }
 
-class UsersDataSourceAsync extends AsyncDataTableSource {
-  UsersDataSourceAsync({required this.context});
+class ResidencesDataSourceAsync extends AsyncDataTableSource {
+  ResidencesDataSourceAsync({required this.context});
 
   final BuildContext context;
 
-  final UserManagerRepo _userRepo = getIt.get<UserManagerRepo>();
+  final ResidenceManagerRepo _ResidenceRepo = getIt.get<ResidenceManagerRepo>();
 
   final bool _empty = false;
   int? _errorCounter;
@@ -78,31 +77,33 @@ class UsersDataSourceAsync extends AsyncDataTableSource {
     // }
 
     // try {
-    var response = await _userRepo.getAllUsers(1, 5, null, null);
+    var response = await _ResidenceRepo.getAllResidences(1, 5, null, null);
 
     return response.fold((error) {
       return AsyncRowsResponse(0, <DataRow2>[]);
     }, (x) {
-      var dataRows = x.items.map((user) {
+      var dataRows = x.items.map((Residence) {
         return DataRow2(
           onTap: () {
             context.goNamed(
-              pathParameters: {"userId": user.id},
-              "userAdminInfo",
+              pathParameters: {"ResidenceId": Residence.residenceId},
+              "ResidenceAdminInfo",
             );
           },
-          key: ValueKey<String>(user.id),
+          key: ValueKey<String>(Residence.residenceId),
           onSelectChanged: (value) {
             if (value != null) {
-              setRowSelection(ValueKey<String>(user.id), value);
+              setRowSelection(ValueKey<String>(Residence.residenceId), value);
             }
           },
           cells: [
-            DataCell(Text(user.name)),
-            DataCell(Text(user.surname)),
-            DataCell(Text(user.email)),
-            DataCell(Text(user.role)),
-            DataCell(Text(DateFormat('dd-MM-yyyy').format(user.createdAt))),
+            DataCell(Text(Residence.residenceId)),
+            DataCell(Text(Residence.street)),
+            DataCell(Text(Residence.buildingNumber)),
+            DataCell(
+              Text(Residence.apartmentNumber),
+            ),
+            DataCell(Text(Residence.floor.toString())),
           ],
         );
       }).toList();
@@ -115,18 +116,19 @@ class UsersDataSourceAsync extends AsyncDataTableSource {
   }
 }
 
-class UsersPaginatedTable extends StatefulWidget {
-  const UsersPaginatedTable({super.key});
+class ResidencesPaginatedTable extends StatefulWidget {
+  const ResidencesPaginatedTable({super.key});
 
   @override
-  UsersPaginatedTableState createState() => UsersPaginatedTableState();
+  ResidencesPaginatedTableState createState() =>
+      ResidencesPaginatedTableState();
 }
 
-class UsersPaginatedTableState extends State<UsersPaginatedTable> {
+class ResidencesPaginatedTableState extends State<ResidencesPaginatedTable> {
   int _rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
   bool _sortAscending = true;
   int? _sortColumnIndex;
-  UsersDataSourceAsync? _UserssDataSource;
+  ResidencesDataSourceAsync? _ResidencessDataSource;
   final PaginatorController _controller = PaginatorController();
 
   final bool _dataSourceLoading = false;
@@ -135,7 +137,7 @@ class UsersPaginatedTableState extends State<UsersPaginatedTable> {
   @override
   void didChangeDependencies() {
     // initState is to early to access route options, context is invalid at that stage
-    _UserssDataSource = UsersDataSourceAsync(context: context);
+    _ResidencessDataSource = ResidencesDataSourceAsync(context: context);
 
     super.didChangeDependencies();
   }
@@ -162,7 +164,7 @@ class UsersPaginatedTableState extends State<UsersPaginatedTable> {
         columnName = "Date";
         break;
     }
-    _UserssDataSource!.sort(columnName, ascending);
+    _ResidencessDataSource!.sort(columnName, ascending);
     setState(() {
       _sortColumnIndex = columnIndex;
       _sortAscending = ascending;
@@ -171,7 +173,7 @@ class UsersPaginatedTableState extends State<UsersPaginatedTable> {
 
   @override
   void dispose() {
-    _UserssDataSource!.dispose();
+    _ResidencessDataSource!.dispose();
     super.dispose();
   }
 
@@ -265,8 +267,8 @@ class UsersPaginatedTableState extends State<UsersPaginatedTable> {
                   child: const Text('No data'))),
           //  loading: const CircularProgressIndicator(),
           // errorBuilder: (e) => _ErrorAndRetry(
-          //     e.toString(), () => _UserssDataSource!.refreshDatasource()),
-          source: _UserssDataSource!),
+          //     e.toString(), () => _ResidencessDataSource!.refreshDatasource()),
+          source: _ResidencessDataSource!),
     ]);
   }
 }

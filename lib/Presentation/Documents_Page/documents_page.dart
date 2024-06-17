@@ -15,6 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'package:basics/Presentation/Documents_Page/document_service.dart';
 import 'package:basics/Presentation/Documents_Page/documentclass.dart';
+import 'package:basics/Presentation/Documents_Page/pdf_download.dart';
 
 class DocumentsPage extends StatefulWidget {
   const DocumentsPage({super.key});
@@ -58,7 +59,8 @@ class _ExampleAppState extends State<ExampleApp> {
             signed: document.signed,
             name: document.name,
             description: document.description,
-            date: document.creationDate));
+            date: document.creationDate,
+            documentid: document.documentId));
       }
     } catch (e) {
       print('Error fetching documents: $e');
@@ -200,8 +202,10 @@ class _ExampleAppState extends State<ExampleApp> {
     );
   }
 
-  void addActor(bool signed, String name, DateTime date, String description) {
+  void addActor(
+      bool signed, String name, DateTime date, String description, int id) {
     actors.add(Actor(
+      documentid: id,
       signed: signed,
       date: date,
       description: description,
@@ -315,6 +319,7 @@ class ActorItem extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 // Akcja, którą chcesz wykonać po kliknięciu
+                fetchPdf(context, actor.documentid);
               },
               child: Container(
                 padding: const EdgeInsets.all(8.0),
@@ -358,11 +363,13 @@ class EmptyView extends StatelessWidget {
 
 class Actor {
   bool signed;
+  int documentid;
   String name;
   String description;
   DateTime date;
 
   Actor({
+    required this.documentid,
     required this.signed,
     required this.name,
     required this.description,

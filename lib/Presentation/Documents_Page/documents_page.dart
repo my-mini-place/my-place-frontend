@@ -7,11 +7,10 @@ import 'package:basics/app_routing.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:searchable_listview/searchable_listview.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'dart:convert';
 import 'package:basics/Presentation/Documents_Page/document_service.dart';
 import 'package:basics/Presentation/Documents_Page/documentclass.dart';
@@ -286,9 +285,6 @@ class ActorItem extends StatelessWidget {
               Icons.star,
               color: Colors.yellow[700],
             ),
-            const SizedBox(
-              width: 10,
-            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -307,15 +303,9 @@ class ActorItem extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  'Date of Document: ${actor.date}',
-                  style: const TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
               ],
             ),
-            const Spacer(),
+
             GestureDetector(
               onTap: () {
                 // Akcja, którą chcesz wykonać po kliknięciu

@@ -1,4 +1,7 @@
 import 'package:basics/Presentation/Admin_Panel_Page/Admin_Page.dart';
+import 'package:basics/Presentation/Admin_Panel_Page/block_list_page.dart';
+import 'package:basics/Presentation/Admin_Panel_Page/components/residence_list_page.dart';
+import 'package:basics/Presentation/Admin_Panel_Page/user_admin_info.dart';
 import 'package:basics/Presentation/Admin_Panel_Page/user_list_page.dart';
 import 'package:basics/Presentation/Calendar_Page/CalendarPage.dart';
 
@@ -73,7 +76,22 @@ final GoRouter routerConfig = GoRouter(
         name: 'admin',
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: AdminPanelPage())),
-
+    GoRoute(
+        path: '/home/admin-panel/users/:userId',
+        name: 'userAdminInfo',
+        pageBuilder: (context, state) => NoTransitionPage(
+            child:
+                UserProfileAdminPage(userId: state.pathParameters['userId']!))),
+    GoRoute(
+        path: '/home/admin-panel/blocks',
+        name: 'Blocks',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: BlockListPage())),
+    GoRoute(
+        path: '/home/admin-panel/residences',
+        name: 'Residence',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: ResidenceListPage())),
     GoRoute(
         path: '/home/posts',
         name: 'posts',

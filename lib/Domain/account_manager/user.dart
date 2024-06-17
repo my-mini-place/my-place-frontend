@@ -16,14 +16,14 @@ class User {
     required this.role,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromJson(dynamic json) {
     return User(
-      id: json['id'],
-      email: json['email'],
-      name: json['name'],
-      surname: json['surname'],
+      id: json['id'] as String,
+      email: json['email'] as String,
+      name: json['name'] as String,
+      surname: json['surname'] as String,
       createdAt: DateTime.parse(json['createdAt']),
-      role: json['role'],
+      role: json['role'] as String,
     );
   }
 

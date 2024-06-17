@@ -1,5 +1,7 @@
 import 'package:basics/Domain/account_manager/User.dart';
 import 'package:basics/Domain/account_manager/userdetails.dart';
+import 'package:basics/Domain/paged_list.dart';
+import 'package:basics/Domain/posts/post.dart';
 import 'package:basics/Infrastructure/basic_repo.dart';
 import 'package:basics/Infrastructure/dio_client.dart';
 import 'package:basics/Infrastructure/urls.dart';
@@ -15,14 +17,54 @@ class UserManagerRepo extends BasicRepo {
 
   UserManagerRepo() : super();
 
-  Future<Either<String, List<User>>> getAllUsers() async {
+  Future<Either<String, PagedList<User>>> getAllUsers(
+      int page, int pageSize, String? sortColumn, String? sortOrder) async {
     try {
-      // idk czy on automatycznie bedzie probowla zamieniac json na list<User>
-      final response =
-          await dioClient.dio.get<List<User>>('https://example.com/api/users');
-      List<User> users = response.data!;
+      final response = await dioClient.dio.get(getUsersUrl,
+          queryParameters: {'page': page, 'pageSize': pageSize},
+          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
 
-      return Right(users);
+      final PagedList<User> pagedList =
+          PagedList.fromJson(response.data, User.fromJson);
+
+      if (response.statusCode != 200) {
+        return Left(response.statusMessage!);
+      }
+
+      return Right(pagedList);
+
+      // List<User> users = response.data!;
+      // var json = {
+      //   "items": [
+      //     {
+      //       "id": "6ae40b13-20a8-462c-9364-a455ef2d3908",
+      //       "email": "user1@example.com",
+      //       "name": "John",
+      //       "surname": "Doe",
+      //       "createdAt": "2021-06-15T14:48:00.000Z",
+      //       "role": "Administrator"
+      //     },
+      //     {
+      //       "id": "2",
+      //       "email": "user2@example.com",
+      //       "name": "Jane",
+      //       "surname": "Smith",
+      //       "createdAt": "2021-06-16T15:00:00.000Z",
+      //       "role": "User"
+      //     },
+      //     {
+      //       "id": "3",
+      //       "email": "user3@example.com",
+      //       "name": "Alice",
+      //       "surname": "Johnson",
+      //       "createdAt": "2021-06-17T16:20:00.000Z",
+      //       "role": "Moderator"
+      //     }
+      //   ],
+      //   "totalCount": 3,
+      //   "pageIndex": 1,
+      //   "pageSize": 10
+      // };
     } on DioException catch (e) {
       return Left(e.message!);
     }

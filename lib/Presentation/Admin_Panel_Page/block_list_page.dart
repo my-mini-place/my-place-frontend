@@ -1,47 +1,51 @@
 import 'package:basics/DI.dart';
+import 'package:basics/Domain/account_manager/user.dart';
+import 'package:basics/Domain/paged_list.dart';
+import 'package:basics/Domain/value_objects/fonts.dart';
 
 import 'package:basics/Infrastructure/user_manager_repo.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
 import 'package:data_table_2/data_table_2.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-class UserListPage extends StatefulWidget {
-  const UserListPage({super.key});
+import '../../Infrastructure/bloc_repo.dart';
+
+class BlockListPage extends StatefulWidget {
+  const BlockListPage({super.key});
 
   @override
-  State<UserListPage> createState() => _UserListPageState();
+  State<BlockListPage> createState() => _BlockListPageState();
 }
 
-class _UserListPageState extends State<UserListPage> {
+class _BlockListPageState extends State<BlockListPage> {
   @override
   Widget build(BuildContext context) {
     return const AppPageBasics(children: [
       gapH40,
 
-      Text("Lista użytkowników",
+      Text("Lista Mieszkań",
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900)),
       // gapH10,
       SizedBox(
         height: 800,
         width: 1000,
-        child: UsersPaginatedTable(),
+        child: BlocksPaginatedTable(),
       )
     ]);
   }
 }
 
-class UsersDataSourceAsync extends AsyncDataTableSource {
-  UsersDataSourceAsync({required this.context});
+class BlocksDataSourceAsync extends AsyncDataTableSource {
+  BlocksDataSourceAsync({required this.context});
 
   final BuildContext context;
 
-  final UserManagerRepo _userRepo = getIt.get<UserManagerRepo>();
+  final BlockManagerRepo _BlockRepo = getIt.get<BlockManagerRepo>();
 
   final bool _empty = false;
   int? _errorCounter;
@@ -73,33 +77,35 @@ class UsersDataSourceAsync extends AsyncDataTableSource {
     //     throw 'Error #${((_errorCounter! - 1) / 2).round() + 1} has occured';
     //   }
     // }
-
+    int page = startIndex ~/ count + 1;
     // try {
-    var response = await _userRepo.getAllUsers(1, 5, null, null);
+    var response = await _BlockRepo.getAllBlocks(page, count, null, null);
 
     return response.fold((error) {
       return AsyncRowsResponse(0, <DataRow2>[]);
     }, (x) {
-      var dataRows = x.items.map((user) {
+      var dataRows = x.items.map((Block) {
         return DataRow2(
-          onTap: () {
-            context.goNamed(
-              pathParameters: {"userId": user.id},
-              "userAdminInfo",
-            );
-          },
-          key: ValueKey<String>(user.id),
+          onTap: () {},
+          key: ValueKey<String>(Block.BlockId.toString()),
           onSelectChanged: (value) {
             if (value != null) {
-              setRowSelection(ValueKey<String>(user.id), value);
+              setRowSelection(
+                  ValueKey<String>(Block.BlockId.toString()), value);
             }
           },
           cells: [
-            DataCell(Text(user.name)),
-            DataCell(Text(user.surname)),
-            DataCell(Text(user.email)),
-            DataCell(Text(user.role)),
-            DataCell(Text(DateFormat('dd-MM-yyyy').format(user.createdAt))),
+            DataCell(Text(Block.BlockId.toString())),
+            DataCell(Text(Block.Name)),
+            DataCell(Text(Block.PostalCode)),
+            DataCell(Center(child: Text(Block.Number))),
+            DataCell(Center(child: Text(Block.Street))),
+            DataCell(Text(Block.Floors.toString())),
+
+            // DataCell(
+            //   Text(Block.),
+            // ),
+            // DataCell(Text(Block.floor.toString())),
           ],
         );
       }).toList();
@@ -112,18 +118,18 @@ class UsersDataSourceAsync extends AsyncDataTableSource {
   }
 }
 
-class UsersPaginatedTable extends StatefulWidget {
-  const UsersPaginatedTable({super.key});
+class BlocksPaginatedTable extends StatefulWidget {
+  const BlocksPaginatedTable({super.key});
 
   @override
-  UsersPaginatedTableState createState() => UsersPaginatedTableState();
+  BlocksPaginatedTableState createState() => BlocksPaginatedTableState();
 }
 
-class UsersPaginatedTableState extends State<UsersPaginatedTable> {
+class BlocksPaginatedTableState extends State<BlocksPaginatedTable> {
   int _rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
   bool _sortAscending = true;
   int? _sortColumnIndex;
-  UsersDataSourceAsync? _UserssDataSource;
+  BlocksDataSourceAsync? _BlockssDataSource;
   final PaginatorController _controller = PaginatorController();
 
   final bool _dataSourceLoading = false;
@@ -132,7 +138,7 @@ class UsersPaginatedTableState extends State<UsersPaginatedTable> {
   @override
   void didChangeDependencies() {
     // initState is to early to access route options, context is invalid at that stage
-    _UserssDataSource = UsersDataSourceAsync(context: context);
+    _BlockssDataSource = BlocksDataSourceAsync(context: context);
 
     super.didChangeDependencies();
   }
@@ -159,7 +165,7 @@ class UsersPaginatedTableState extends State<UsersPaginatedTable> {
         columnName = "Date";
         break;
     }
-    _UserssDataSource!.sort(columnName, ascending);
+    _BlockssDataSource!.sort(columnName, ascending);
     setState(() {
       _sortColumnIndex = columnIndex;
       _sortAscending = ascending;
@@ -168,33 +174,38 @@ class UsersPaginatedTableState extends State<UsersPaginatedTable> {
 
   @override
   void dispose() {
-    _UserssDataSource!.dispose();
+    _BlockssDataSource!.dispose();
     super.dispose();
   }
 
   List<DataColumn> get _columns {
     return [
-      DataColumn(
+      DataColumn2(
+        label: const Text('Block ID'),
+        onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
+      ),
+      DataColumn2(
         label: const Text('Name'),
-        onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
-      ),
-      DataColumn(
-        label: const Text('Surname'),
         numeric: true,
         onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
       ),
-      DataColumn(
-        label: const Text('Email'),
+      DataColumn2(
+        label: const Text('PostalCode'),
         numeric: true,
         onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
       ),
-      DataColumn(
-        label: const Text('Role'),
+      DataColumn2(
+        label: const Center(child: Text('Number')),
         numeric: true,
         onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
       ),
-      DataColumn(
-        label: const Text('Creation Date'),
+      DataColumn2(
+        label: const Text('Street'),
+        numeric: true,
+        onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
+      ),
+      DataColumn2(
+        label: const Text('Floors'),
         numeric: true,
         onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
       ),
@@ -210,14 +221,18 @@ class UsersPaginatedTableState extends State<UsersPaginatedTable> {
 
     return Stack(alignment: Alignment.bottomCenter, children: [
       AsyncPaginatedDataTable2(
+          actions: [
+            TextButton(onPressed: () {}, child: const Text("Dodaj mieszkanie"))
+          ],
           lmRatio: 0.6,
           smRatio: 0.5,
           renderEmptyRowsInTheEnd: true,
+
           //  loading: _Loading(),
           showCheckboxColumn: false,
           horizontalMargin: 10,
           checkboxHorizontalMargin: 12,
-          columnSpacing: 0,
+          columnSpacing: 10,
           wrapInCard: false,
           headingRowDecoration: const BoxDecoration(),
           header: const Row(
@@ -262,8 +277,8 @@ class UsersPaginatedTableState extends State<UsersPaginatedTable> {
                   child: const Text('No data'))),
           //  loading: const CircularProgressIndicator(),
           // errorBuilder: (e) => _ErrorAndRetry(
-          //     e.toString(), () => _UserssDataSource!.refreshDatasource()),
-          source: _UserssDataSource!),
+          //     e.toString(), () => _BlockssDataSource!.refreshDatasource()),
+          source: _BlockssDataSource!),
     ]);
   }
 }

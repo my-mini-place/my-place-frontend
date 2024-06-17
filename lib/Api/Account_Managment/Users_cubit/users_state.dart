@@ -7,7 +7,7 @@ class UsersInitialState extends UsersState {}
 class UsersLoading extends UsersState {}
 
 class UsersLoaded extends UsersState {
-  final List<User> users;
+  final PagedList<User> users;
   UsersLoaded(this.users);
 }
 

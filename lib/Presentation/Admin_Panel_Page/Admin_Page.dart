@@ -54,10 +54,21 @@ class _AdminPanelPageState extends State<AdminPanelPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: OptionTile(
                     icon: Icons.house,
-                    title: "Mieszkania i bloki",
-                    description: "Edytuj, usuń, zmień blok lub mieszkanie!",
+                    title: "Mieszkania",
+                    description: "Edytuj, usuń, zmień mieszkanie!",
                     navigation: () {
-                      context.goNamed("blockandresidence");
+                      context.goNamed("Residence");
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: OptionTile(
+                    icon: Icons.house,
+                    title: "Bloki",
+                    description: "Edytuj, usuń, zmień Bloki!",
+                    navigation: () {
+                      context.goNamed("Blocks");
                     },
                   ),
                 ),

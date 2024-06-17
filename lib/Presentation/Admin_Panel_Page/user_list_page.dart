@@ -1,7 +1,5 @@
 import 'package:basics/DI.dart';
-import 'package:basics/Domain/account_manager/user.dart';
-import 'package:basics/Domain/paged_list.dart';
-import 'package:basics/Domain/value_objects/fonts.dart';
+
 import 'package:basics/Infrastructure/user_manager_repo.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
@@ -9,8 +7,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -218,7 +215,7 @@ class UsersPaginatedTableState extends State<UsersPaginatedTable> {
           renderEmptyRowsInTheEnd: true,
           //  loading: _Loading(),
           showCheckboxColumn: false,
-          horizontalMargin: 20,
+          horizontalMargin: 10,
           checkboxHorizontalMargin: 12,
           columnSpacing: 0,
           wrapInCard: false,

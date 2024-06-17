@@ -13,11 +13,16 @@ import 'dart:convert';
 // }
 
 class Block {
-  int BlockId;
+  String BlockId;
   String Name;
   String PostalCode;
   int Floors;
+  String Street;
+  String Number;
+
   Block({
+    required this.Street,
+    required this.Number,
     required this.BlockId,
     required this.Name,
     required this.PostalCode,
@@ -30,20 +35,19 @@ class Block {
       'Name': Name,
       'PostalCode': PostalCode,
       'Floors': Floors,
+      'Street': Street,
+      'Number': Number,
     };
   }
 
-  factory Block.fromMap(Map<String, dynamic> map) {
+  factory Block.fromJson(dynamic map) {
     return Block(
-      BlockId: map['BlockId'] as int,
-      Name: map['Name'] as String,
-      PostalCode: map['PostalCode'] as String,
-      Floors: map['Floors'] as int,
+      BlockId: map['blockId'] as String,
+      Name: map['name'] as String,
+      PostalCode: map['postalCode'] as String,
+      Floors: map['floors'] as int,
+      Number: map['number'] as String,
+      Street: map['street'] as String,
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Block.fromJson(dynamic source) =>
-      Block.fromMap(json.decode(source) as Map<String, dynamic>);
 }

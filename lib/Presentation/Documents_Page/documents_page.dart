@@ -259,9 +259,6 @@ class ActorItem extends StatelessWidget {
               Icons.star,
               color: Colors.yellow[700],
             ),
-            const SizedBox(
-              width: 10,
-            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -280,16 +277,7 @@ class ActorItem extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  'Date of Document: ${actor.date}',
-                  style: const TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
               ],
-            ),
-            const SizedBox(
-              width: 100,
             ),
             GestureDetector(
               onTap: () {

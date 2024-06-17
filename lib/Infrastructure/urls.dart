@@ -26,7 +26,7 @@ const String getResidencesUrl = "https://localhost:7281/api/Residence/";
 
 const String residenceUrl = "https://localhost:7281/api/Residence/";
 
-const String blockUrl = "BlocksUrl";
+const String blockUrl = "https://localhost:7281/api/Block/";
 
 // const String loginUrl = "https ://localhost:5001/api/Security/login";
 

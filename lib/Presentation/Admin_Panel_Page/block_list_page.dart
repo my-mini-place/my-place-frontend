@@ -2,7 +2,7 @@ import 'package:basics/DI.dart';
 import 'package:basics/Domain/account_manager/user.dart';
 import 'package:basics/Domain/paged_list.dart';
 import 'package:basics/Domain/value_objects/fonts.dart';
-import 'package:basics/Infrastructure/residences_repo.dart';
+
 import 'package:basics/Infrastructure/user_manager_repo.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
 import 'package:basics/Presentation/Utils/gaps.dart';
@@ -13,14 +13,16 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-class ResidenceListPage extends StatefulWidget {
-  const ResidenceListPage({super.key});
+import '../../Infrastructure/bloc_repo.dart';
+
+class BlockListPage extends StatefulWidget {
+  const BlockListPage({super.key});
 
   @override
-  State<ResidenceListPage> createState() => _ResidenceListPageState();
+  State<BlockListPage> createState() => _BlockListPageState();
 }
 
-class _ResidenceListPageState extends State<ResidenceListPage> {
+class _BlockListPageState extends State<BlockListPage> {
   @override
   Widget build(BuildContext context) {
     return const AppPageBasics(children: [
@@ -32,18 +34,18 @@ class _ResidenceListPageState extends State<ResidenceListPage> {
       SizedBox(
         height: 800,
         width: 1000,
-        child: ResidencesPaginatedTable(),
+        child: BlocksPaginatedTable(),
       )
     ]);
   }
 }
 
-class ResidencesDataSourceAsync extends AsyncDataTableSource {
-  ResidencesDataSourceAsync({required this.context});
+class BlocksDataSourceAsync extends AsyncDataTableSource {
+  BlocksDataSourceAsync({required this.context});
 
   final BuildContext context;
 
-  final ResidenceManagerRepo _ResidenceRepo = getIt.get<ResidenceManagerRepo>();
+  final BlockManagerRepo _BlockRepo = getIt.get<BlockManagerRepo>();
 
   final bool _empty = false;
   int? _errorCounter;
@@ -75,30 +77,35 @@ class ResidencesDataSourceAsync extends AsyncDataTableSource {
     //     throw 'Error #${((_errorCounter! - 1) / 2).round() + 1} has occured';
     //   }
     // }
-
+    int page = startIndex ~/ count + 1;
     // try {
-    var response = await _ResidenceRepo.getAllResidences(1, 5, null, null);
+    var response = await _BlockRepo.getAllBlocks(page, count, null, null);
 
     return response.fold((error) {
       return AsyncRowsResponse(0, <DataRow2>[]);
     }, (x) {
-      var dataRows = x.items.map((Residence) {
+      var dataRows = x.items.map((Block) {
         return DataRow2(
           onTap: () {},
-          key: ValueKey<String>(Residence.residenceId),
+          key: ValueKey<String>(Block.BlockId.toString()),
           onSelectChanged: (value) {
             if (value != null) {
-              setRowSelection(ValueKey<String>(Residence.residenceId), value);
+              setRowSelection(
+                  ValueKey<String>(Block.BlockId.toString()), value);
             }
           },
           cells: [
-            DataCell(Text(Residence.residenceId)),
-            DataCell(Text(Residence.street)),
-            DataCell(Text(Residence.buildingNumber)),
-            DataCell(
-              Text(Residence.apartmentNumber),
-            ),
-            DataCell(Text(Residence.floor.toString())),
+            DataCell(Text(Block.BlockId.toString())),
+            DataCell(Text(Block.Name)),
+            DataCell(Text(Block.PostalCode)),
+            DataCell(Center(child: Text(Block.Number))),
+            DataCell(Center(child: Text(Block.Street))),
+            DataCell(Text(Block.Floors.toString())),
+
+            // DataCell(
+            //   Text(Block.),
+            // ),
+            // DataCell(Text(Block.floor.toString())),
           ],
         );
       }).toList();
@@ -111,19 +118,18 @@ class ResidencesDataSourceAsync extends AsyncDataTableSource {
   }
 }
 
-class ResidencesPaginatedTable extends StatefulWidget {
-  const ResidencesPaginatedTable({super.key});
+class BlocksPaginatedTable extends StatefulWidget {
+  const BlocksPaginatedTable({super.key});
 
   @override
-  ResidencesPaginatedTableState createState() =>
-      ResidencesPaginatedTableState();
+  BlocksPaginatedTableState createState() => BlocksPaginatedTableState();
 }
 
-class ResidencesPaginatedTableState extends State<ResidencesPaginatedTable> {
+class BlocksPaginatedTableState extends State<BlocksPaginatedTable> {
   int _rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
   bool _sortAscending = true;
   int? _sortColumnIndex;
-  ResidencesDataSourceAsync? _ResidencessDataSource;
+  BlocksDataSourceAsync? _BlockssDataSource;
   final PaginatorController _controller = PaginatorController();
 
   final bool _dataSourceLoading = false;
@@ -132,7 +138,7 @@ class ResidencesPaginatedTableState extends State<ResidencesPaginatedTable> {
   @override
   void didChangeDependencies() {
     // initState is to early to access route options, context is invalid at that stage
-    _ResidencessDataSource = ResidencesDataSourceAsync(context: context);
+    _BlockssDataSource = BlocksDataSourceAsync(context: context);
 
     super.didChangeDependencies();
   }
@@ -159,7 +165,7 @@ class ResidencesPaginatedTableState extends State<ResidencesPaginatedTable> {
         columnName = "Date";
         break;
     }
-    _ResidencessDataSource!.sort(columnName, ascending);
+    _BlockssDataSource!.sort(columnName, ascending);
     setState(() {
       _sortColumnIndex = columnIndex;
       _sortAscending = ascending;
@@ -168,33 +174,38 @@ class ResidencesPaginatedTableState extends State<ResidencesPaginatedTable> {
 
   @override
   void dispose() {
-    _ResidencessDataSource!.dispose();
+    _BlockssDataSource!.dispose();
     super.dispose();
   }
 
   List<DataColumn> get _columns {
     return [
-      DataColumn(
-        label: const Text('Residence ID'),
+      DataColumn2(
+        label: const Text('Block ID'),
         onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
       ),
-      DataColumn(
+      DataColumn2(
+        label: const Text('Name'),
+        numeric: true,
+        onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
+      ),
+      DataColumn2(
+        label: const Text('PostalCode'),
+        numeric: true,
+        onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
+      ),
+      DataColumn2(
+        label: const Center(child: Text('Number')),
+        numeric: true,
+        onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
+      ),
+      DataColumn2(
         label: const Text('Street'),
         numeric: true,
         onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
       ),
-      DataColumn(
-        label: const Text('Building Number'),
-        numeric: true,
-        onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
-      ),
-      DataColumn(
-        label: const Text('Apartment Number'),
-        numeric: true,
-        onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
-      ),
-      DataColumn(
-        label: const Text('Floor'),
+      DataColumn2(
+        label: const Text('Floors'),
         numeric: true,
         onSort: (columnIndex, ascending) => sort(columnIndex, ascending),
       ),
@@ -216,11 +227,12 @@ class ResidencesPaginatedTableState extends State<ResidencesPaginatedTable> {
           lmRatio: 0.6,
           smRatio: 0.5,
           renderEmptyRowsInTheEnd: true,
+
           //  loading: _Loading(),
           showCheckboxColumn: false,
           horizontalMargin: 10,
           checkboxHorizontalMargin: 12,
-          columnSpacing: 0,
+          columnSpacing: 10,
           wrapInCard: false,
           headingRowDecoration: const BoxDecoration(),
           header: const Row(
@@ -265,8 +277,8 @@ class ResidencesPaginatedTableState extends State<ResidencesPaginatedTable> {
                   child: const Text('No data'))),
           //  loading: const CircularProgressIndicator(),
           // errorBuilder: (e) => _ErrorAndRetry(
-          //     e.toString(), () => _ResidencessDataSource!.refreshDatasource()),
-          source: _ResidencessDataSource!),
+          //     e.toString(), () => _BlockssDataSource!.refreshDatasource()),
+          source: _BlockssDataSource!),
     ]);
   }
 }

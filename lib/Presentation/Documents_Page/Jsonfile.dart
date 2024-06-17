@@ -2,7 +2,7 @@ part of "documentclass.dart";
 
 Document _$DocumentFromJson(Map<String, dynamic> json) {
   return Document(
-    documentId: json['DocumentId'] as int,
+    documentId: json['documentId'] as int,
     name: json['name'] as String,
     signed: json['signed'] as bool,
     description: json['description'] as String,
@@ -11,7 +11,7 @@ Document _$DocumentFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$DocumentToJson(Document instance) => <String, dynamic>{
-      'DocumentId': instance.documentId,
+      'documentId': instance.documentId,
       'name': instance.name,
       'signed': instance.signed,
       'description': instance.description,

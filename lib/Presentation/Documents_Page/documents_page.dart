@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:basics/DI.dart';
 import 'package:basics/Infrastructure/dio_client.dart';
 import 'package:basics/Presentation/Site/app_page.dart';
@@ -14,6 +13,8 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
+import 'package:basics/Presentation/Documents_Page/document_service.dart';
+import 'package:basics/Presentation/Documents_Page/documentclass.dart';
 
 class DocumentsPage extends StatefulWidget {
   const DocumentsPage({super.key});
@@ -41,57 +42,78 @@ class ExampleApp extends StatefulWidget {
 }
 
 class _ExampleAppState extends State<ExampleApp> {
-  final List<Actor> actors = [
-    Actor(
-        id: 12,
-        date: DateTime(2023, 6, 30),
-        name: 'Leonardo',
-        lastName: 'DiCaprio'),
-    Actor(
-        id: 11, date: DateTime(2023, 6, 30), name: 'Johnny', lastName: 'Depp'),
-    Actor(
-        id: 10,
-        date: DateTime(2023, 6, 30),
-        name: 'Robert',
-        lastName: 'De Niro'),
-    Actor(id: 9, date: DateTime(2023, 6, 30), name: 'Tom', lastName: 'Hardy'),
-    Actor(
-        id: 8,
-        date: DateTime(2023, 6, 30),
-        name: 'Denzel',
-        lastName: 'Washington'),
-    Actor(id: 7, date: DateTime(2023, 6, 30), name: 'Ben', lastName: 'Affleck'),
-  ];
+  List<Actor> actors = [];
+  @override
+  void initState() {
+    super.initState();
+    callFetchDocuments();
+  }
 
-  final Map<String, List<Actor>> mapOfActors = {
-    'test 1': [
-      Actor(
-          id: 6,
-          date: DateTime(2023, 7, 30),
-          name: 'Leonardo',
-          lastName: 'DiCaprio'),
-      Actor(
-          id: 5,
-          date: DateTime(2023, 6, 2),
-          name: 'Denzel',
-          lastName: 'Washington'),
-      Actor(
-          id: 4,
-          date: DateTime(2021, 11, 30),
-          name: 'Ben',
-          lastName: 'Affleck'),
-    ],
-    'test 2': [
-      Actor(
-          id: 1, date: DateTime(2023, 5, 11), name: 'Johnny', lastName: 'Depp'),
-      Actor(
-          id: 2,
-          date: DateTime(2022, 6, 10),
-          name: 'Robert',
-          lastName: 'De Niro'),
-      Actor(id: 3, date: DateTime(2023, 6, 30), name: 'Tom', lastName: 'Hardy'),
-    ]
-  };
+  Future<void> callFetchDocuments() async {
+    DocumentService documentService = DocumentService();
+    try {
+      List<Document> documents = await documentService.fetchDocuments();
+      for (var document in documents) {
+        actors.add(Actor(
+            signed: document.signed,
+            name: document.name,
+            description: document.description,
+            date: document.creationDate));
+      }
+    } catch (e) {
+      print('Error fetching documents: $e');
+    }
+  }
+  //   Actor(
+  //       id: 12,
+  //       date: DateTime(2023, 6, 30),
+  //       name: 'Leonardo',
+  //       lastName: 'DiCaprio'),
+  //   Actor(
+  //       id: 11, date: DateTime(2023, 6, 30), name: 'Johnny', lastName: 'Depp'),
+  //   Actor(
+  //       id: 10,
+  //       date: DateTime(2023, 6, 30),
+  //       name: 'Robert',
+  //       lastName: 'De Niro'),
+  //   Actor(id: 9, date: DateTime(2023, 6, 30), name: 'Tom', lastName: 'Hardy'),
+  //   Actor(
+  //       id: 8,
+  //       date: DateTime(2023, 6, 30),
+  //       name: 'Denzel',
+  //       lastName: 'Washington'),
+  //   Actor(id: 7, date: DateTime(2023, 6, 30), name: 'Ben', lastName: 'Affleck'),
+  // ];
+
+  // final Map<String, List<Actor>> mapOfActors = {
+  //   'test 1': [
+  //     Actor(
+  //         id: 6,
+  //         date: DateTime(2023, 7, 30),
+  //         name: 'Leonardo',
+  //         lastName: 'DiCaprio'),
+  //     Actor(
+  //         id: 5,
+  //         date: DateTime(2023, 6, 2),
+  //         name: 'Denzel',
+  //         lastName: 'Washington'),
+  //     Actor(
+  //         id: 4,
+  //         date: DateTime(2021, 11, 30),
+  //         name: 'Ben',
+  //         lastName: 'Affleck'),
+  //   ],
+  //   'test 2': [
+  //     Actor(
+  //         id: 1, date: DateTime(2023, 5, 11), name: 'Johnny', lastName: 'Depp'),
+  //     Actor(
+  //         id: 2,
+  //         date: DateTime(2022, 6, 10),
+  //         name: 'Robert',
+  //         lastName: 'De Niro'),
+  //     Actor(id: 3, date: DateTime(2023, 6, 30), name: 'Tom', lastName: 'Hardy'),
+  //   ]
+  //};
 
   final TextEditingController searchTextController = TextEditingController();
 
@@ -166,24 +188,24 @@ class _ExampleAppState extends State<ExampleApp> {
               child: renderSimpleSearchableList(),
             ),
           ),
-          Align(
-            alignment: Alignment.center,
-            child: ElevatedButton(
-              onPressed: addActor,
-              child: const Text('Add actor'),
-            ),
-          )
+          // Align(
+          //   alignment: Alignment.center,
+          //   child: ElevatedButton(
+          //     onPressed: addActor,
+          //     child: const Text('Add actor'),
+          //   ),
+          // )
         ],
       ),
     );
   }
 
-  void addActor() {
+  void addActor(bool signed, String name, DateTime date, String description) {
     actors.add(Actor(
-      id: 0,
-      date: DateTime(2023, 6, 10),
-      lastName: 'Ali',
-      name: 'ALi',
+      signed: signed,
+      date: date,
+      description: description,
+      name: name,
     ));
     setState(() {});
   }
@@ -268,14 +290,14 @@ class ActorItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Firstname: ${actor.name}',
+                  'Name: ${actor.name}',
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  'Lastname: ${actor.lastName}',
+                  'Description: ${actor.description}',
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -337,15 +359,15 @@ class EmptyView extends StatelessWidget {
 }
 
 class Actor {
-  int id;
+  bool signed;
   String name;
-  String lastName;
+  String description;
   DateTime date;
 
   Actor({
-    required this.id,
+    required this.signed,
     required this.name,
-    required this.lastName,
+    required this.description,
     required this.date,
   });
 }

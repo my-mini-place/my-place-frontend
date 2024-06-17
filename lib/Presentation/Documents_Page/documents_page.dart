@@ -311,9 +311,7 @@ class ActorItem extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              width: 100,
-            ),
+            const Spacer(),
             GestureDetector(
               onTap: () {
                 // Akcja, którą chcesz wykonać po kliknięciu
